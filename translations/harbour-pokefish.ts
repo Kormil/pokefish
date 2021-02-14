@@ -153,6 +153,14 @@
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show advance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide advance</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SearchBySetPage</name>

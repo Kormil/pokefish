@@ -23,6 +23,7 @@ QObject *Controller::instance(QQmlEngine *engine, QJSEngine *scriptEngine)
 void Controller::bindToQml(QQuickView *view)
 {
     qmlRegisterSingletonType<Controller>("Controller", 1, 0, "Controller", Controller::instance);
+    qmlRegisterType<SearchParameters>("Controller", 1, 0, "SearchParameters");
 }
 
 void Controller::setModelsManager(ModelsManager *modelsManager)
@@ -37,17 +38,22 @@ void Controller::resetSearchResult()
     }
 }
 
-void Controller::searchCardsByName(const QString &name)
+void Controller::searchCardsByName(QObject *object)
 {
     emit searchStarted();
 
-    if (name.isEmpty()) {
+    SearchParameters* parameters = qobject_cast<SearchParameters*>(object);
+    if (!parameters) {
+        return;
+    }
+
+    if (parameters->m_name.isEmpty()) {
         emit searchCompleted();
         return;
     }
 
     if (m_modelsManager) {
-        m_modelsManager->searchCardsByName(name, [this](){
+        m_modelsManager->searchCardsByName(parameters, [this](){
             emit searchCompleted();
         });
     } else {

@@ -30,7 +30,7 @@ private:
     QString m_name;
     QString m_damage;
     QString m_text;
-    QStringList m_costList = {"Grass", "Grass", "Water"};
+    QStringList m_costList;
 };
 
 using AttackPtr = std::shared_ptr<Attack>;

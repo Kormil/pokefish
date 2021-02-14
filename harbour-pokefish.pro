@@ -32,6 +32,7 @@ HEADERS += src/types/card.h \
            src/connection.h \
            src/controller.h \
            src/model/setlistmodel.h \
+           src/searchparameters.h \
            src/settings.h \
            src/networkaccessmanagerfactory.h \
            src/request.h \

@@ -6,6 +6,7 @@
 #include <QJSEngine>
 
 #include "modelsmanager.h"
+#include "searchparameters.h"
 
 class Controller : public QObject
 {
@@ -17,7 +18,7 @@ public:
 
     void setModelsManager(ModelsManager* modelsManager);
     Q_INVOKABLE void resetSearchResult();
-    Q_INVOKABLE void searchCardsByName(const QString &name);
+    Q_INVOKABLE void searchCardsByName(QObject *object);
     Q_INVOKABLE void searchCardsByIdList(const QStringList &idList);
     Q_INVOKABLE void searchCardsBySet(const QString &setId);
 

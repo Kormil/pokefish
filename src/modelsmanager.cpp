@@ -8,6 +8,8 @@
 #include "src/types/card.h"
 #include "src/types/attack.h"
 
+#include "src/searchparameters.h"
+
 ModelsManager::ModelsManager() :
     m_cardListModel(nullptr),
     m_searchedCardListModel(nullptr)
@@ -27,6 +29,9 @@ void ModelsManager::createModels()
     m_setListModel = std::make_shared<SetListModel>();
 
     m_connection = std::make_shared<Connection>();
+
+    searchAllTypes();
+    searchAllSubtypes();
     std::cout << "Models created" << std::endl;
 }
 
@@ -41,6 +46,8 @@ void ModelsManager::bindToQml(QQuickView * view)
     qmlRegisterType<SetListModel>("SetListModel", 1, 0, "SetListModel");
     view->rootContext()->setContextProperty(QStringLiteral("searchedCardListModel"), m_searchedCardListModel.get());
     view->rootContext()->setContextProperty(QStringLiteral("setListModel"), m_setListModel.get());
+    view->rootContext()->setContextProperty(QStringLiteral("typesListModel"), &m_typesListModel);
+    view->rootContext()->setContextProperty(QStringLiteral("subtypesListModel"), &m_subtypesListModel);
 
     qmlRegisterType<Card>("Card", 1, 0, "Card");
     qmlRegisterType<Attack>("Card", 1, 0, "Attack");
@@ -55,8 +62,8 @@ SetListModelPtr ModelsManager::setListModel() const {
     return m_setListModel;
 }
 
-void ModelsManager::searchCardsByName(const QString &name, std::function<void(void)> callback) {
-    m_connection->searchCardsByName(name, [=](CardListPtr cards) {
+void ModelsManager::searchCardsByName(SearchParameters* parameters, std::function<void(void)> callback) {
+    m_connection->searchCardsByName(parameters, [=](CardListPtr cards) {
         m_searchedCardListModel->setCardList(cards);
         callback();
     });
@@ -94,6 +101,26 @@ void ModelsManager::searchAllSets(std::function<void(void)> callback) {
     m_connection->searchAllSets([=](SetListPtr sets) {
         m_setListModel->setList(sets);
         callback();
+    });
+}
+
+void ModelsManager::searchAllTypes() {
+    m_connection->searchAllTypes([=](const QStringList& types) {
+        QStringList typesWithAny = types;
+        typesWithAny.sort();
+        typesWithAny.push_front("Any");
+
+        m_typesListModel.setStringList(typesWithAny);
+    });
+}
+
+void ModelsManager::searchAllSubtypes() {
+    m_connection->searchAllSubtypes([=](const QStringList& subtypes) {
+        QStringList subtypesWithAny = subtypes;
+        subtypesWithAny.sort();
+        subtypesWithAny.push_front("Any");
+
+        m_subtypesListModel.setStringList(subtypesWithAny);
     });
 }
 

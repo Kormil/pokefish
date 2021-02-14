@@ -54,8 +54,16 @@ Request* Connection::request(const QUrl &requestUrl)
     return m_networkRequests[serial].get();
 }
 
-void Connection::searchCardsByName(const QString& name, std::function<void(CardListPtr)> handler) {
-    QString url = "https://api.pokemontcg.io/v1/cards?name=" + name;
+void Connection::searchCardsByName(SearchParameters *parameters, std::function<void(CardListPtr)> handler) {
+
+    QString parsedParameters;
+
+    if (!parameters || !parameters->parse(parsedParameters)) {
+        handler(CardListPtr{});
+        return;
+    }
+
+    QString url = "https://api.pokemontcg.io/v1/cards?" + parsedParameters;
     QUrl searchUrl(url);
 
     Request* requestRaw = request(searchUrl);
@@ -198,4 +206,64 @@ SetListPtr Connection::parseSets(const QJsonDocument &jsonDocument) {
     }
 
     return std::move(sets);
+}
+
+void Connection::searchAllTypes(std::function<void(const QStringList&)> handler) {
+    QString url = "https://api.pokemontcg.io/v1/types";
+    QUrl searchUrl(url);
+
+    Request* requestRaw = request(searchUrl);
+
+    QObject::connect(requestRaw, &Request::finished, [this, requestRaw, handler](Request::Status status, const QByteArray& responseArray) {
+        if (status == Request::ERROR) {
+            std::cout << "CONNECTION ERROR" << std::endl;
+            handler(QStringList{});
+        } else {
+            QStringList types = parseArrayOfStrings("types", QJsonDocument::fromJson(responseArray));
+            handler(types);
+        }
+
+        deleteRequest(requestRaw->serial());
+    });
+    requestRaw->run();
+}
+
+void Connection::searchAllSubtypes(std::function<void(const QStringList&)> handler) {
+    QString url = "https://api.pokemontcg.io/v1/subtypes";
+    QUrl searchUrl(url);
+
+    Request* requestRaw = request(searchUrl);
+
+    QObject::connect(requestRaw, &Request::finished, [this, requestRaw, handler](Request::Status status, const QByteArray& responseArray) {
+        if (status == Request::ERROR) {
+            std::cout << "CONNECTION ERROR" << std::endl;
+            handler(QStringList{});
+        } else {
+            QStringList subtypes = parseArrayOfStrings("subtypes", QJsonDocument::fromJson(responseArray));
+            handler(subtypes);
+        }
+
+        deleteRequest(requestRaw->serial());
+    });
+    requestRaw->run();
+}
+
+QStringList Connection::parseArrayOfStrings(const char* name, const QJsonDocument &jsonDocument) {
+    QStringList types;
+
+    if (jsonDocument.isNull())
+        return types;
+
+    auto response = jsonDocument.object()[name];
+    if (response.isUndefined()) {
+        return types;
+    }
+
+    QJsonArray results = response.toArray();
+    for (const auto& result: results) {
+        auto type = result.toString();
+        types.append(type);
+    }
+
+    return types;
 }
