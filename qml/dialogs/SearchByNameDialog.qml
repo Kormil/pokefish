@@ -37,18 +37,18 @@ Dialog {
     }
 
     onAccepted: {
-        searcheddb.dbAdd(searchField.text)
+        search_parameters.name = searchField.text
+        search_parameters.type = typeComboBox.value !== "Any" ? typeComboBox.value : ""
+        search_parameters.subtype = subtypeComboBox.value !== "Any" ? subtypeComboBox.value : ""
+
+
+        searcheddb.dbAdd(search_parameters)
         searcheddb.dbClean(50)
 
         searchedList.clear()
         searcheddb.dbReadAll(searchedList)
 
         Controller.resetSearchResult();
-
-        search_parameters.name = searchField.text
-        search_parameters.type = typeComboBox.value
-        search_parameters.subtype = subtypeComboBox.value
-
         Controller.searchCardsByName(search_parameters)
     }
 
@@ -146,15 +146,52 @@ Dialog {
                 delegate: BackgroundItem {
                     id: delegate
 
-                    Label {
-                        anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
-                        text: model.name
-                        verticalAlignment: Text.AlignVCenter
+                    Row {
+                        x: Theme.horizontalPageMargin
+                        width: parent.width
+                        spacing: Theme.paddingSmall
+                        height: Theme.itemSizeSmall
+
+                        Label {
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            text: model.name
+                        }
+
+                        Label {
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            text: model.type ? model.type : ""
+                            color: Theme.secondaryColor
+                        }
+
+                        Label {
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            text: model.subtype ? model.subtype : ""
+                            color: Theme.secondaryColor
+                        }
                     }
 
                     onClicked: {
                         searchField.text = model.name
+                        typeComboBox.currentIndex = 0
+                        subtypeComboBox.currentIndex = 0
+
+                        var row
+                        for (row = 0; row < typesListModel.rowCount(); ++row) {
+                          if (typesListModel.data(typesListModel.index(row, 0)) === model.type) {
+                              typeComboBox.currentIndex = row
+                              break
+                          }
+                        }
+
+                        for (row = 0; row < subtypesListModel.rowCount(); ++row) {
+                          if (subtypesListModel.data(subtypesListModel.index(row, 0)) === model.subtype) {
+                              subtypeComboBox.currentIndex = row
+                              break
+                          }
+                        }
                     }
                 }
                 VerticalScrollDecorator {}

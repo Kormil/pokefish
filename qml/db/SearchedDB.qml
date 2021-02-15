@@ -7,7 +7,7 @@ Item {
     }
 
     function dbRemoveDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         tx.executeSql('DROP TABLE Searched');
@@ -15,36 +15,47 @@ Item {
     }
 
     function dbCreateDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
+        if (db.version === "1.0") {
+            db.changeVersion("1.0", "1.1", function(tx) {
+                tx.executeSql("ALTER TABLE Searched ADD COLUMN Type TEXT");
+                tx.executeSql("ALTER TABLE Searched ADD COLUMN Subtype TEXT");
+            }
+        )}
+
         db.transaction(
                     function(tx) {
                         tx.executeSql('CREATE TABLE IF NOT EXISTS Searched(
                                         ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                        Name TEXT NOT NULL)');
+                                        Name TEXT NOT NULL,
+                                        Type TEXT
+                                        Subtype TEXT)');
                     })
     }
 
-    function dbAdd(name) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+    function dbAdd(parameters) {
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         var result = tx.executeSql(
-                                    'SELECT Name
+                                    'SELECT Name, Type, Subtype
                                      FROM Searched
                                      ORDER BY ID DESC
                                      LIMIT 1')
 
-                        if (result.rows.length == 0) {
-                            tx.executeSql('INSERT INTO Searched (Name) VALUES(?)', [ name ]);
-                        } else if (result.rows.length && result.rows.item(0).Name !== name) {
-                            tx.executeSql('INSERT INTO Searched (Name) VALUES(?)', [ name ]);
+                        if (result.rows.length == 0 ||
+                                (result.rows.item(0).Name !== parameters.name ||
+                                 result.rows.item(0).Type !== parameters.type ||
+                                 result.rows.item(0).Subtype !== parameters.subtype)) {
+                            tx.executeSql('INSERT INTO Searched (Name, Type, Subtype) VALUES(?, ?, ?)',
+                                          [ parameters.name, parameters.type, parameters.subtype ]);
                         }
                     })
 
     }
 
     function dbReadAll(model) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         db.transaction(function (tx) {
             var results = tx.executeSql(
                         'SELECT *
@@ -54,14 +65,16 @@ Item {
 
             for (var i = 0; i < results.rows.length; i++) {
                 model.append({
-                                 name: results.rows.item(i).Name
+                                 name: results.rows.item(i).Name,
+                                 type: results.rows.item(i).Type,
+                                 subtype: results.rows.item(i).Subtype
                              })
             }
         })
     }
 
     function dbClean(limit) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         var searchCount
 
         db.transaction(
