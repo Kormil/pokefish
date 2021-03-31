@@ -19,15 +19,15 @@ public:
         QStringList parsed;
 
         if (m_name.length()) {
-            parsed << "name=" + m_name;
+            parsed << "name:" + m_name;
         }
 
         if (m_type.length() && m_type != "Any") {
-            parsed << "type=" + m_type;
+            parsed << "type:" + m_type;
         }
 
         if (m_subtype.length() && m_subtype != "Any") {
-            parsed << "subtype=" + m_subtype;
+            parsed << "subtype:" + m_subtype;
         }
 
         outUrlParameters = parsed.join("&");

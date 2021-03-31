@@ -44,46 +44,36 @@ QString Card::hp() const {
     return m_hp;
 }
 
-bool Card::hasAdditionalText() const {
-    return m_hasAdditionalText;
+int Card::rulesSize() const {
+    return m_additionalRules.size();
 }
 
-QString Card::additionalText() const {
-    return m_additionalText;
+QString Card::rule(int index) const {
+    if (index < 0 || index >= m_additionalRules.size()) {
+        return QString();
+    }
+
+    return m_additionalRules[index];
 }
 
-bool Card::hasAbility() const {
-    return m_hasAbility;
+int Card::abilitiesSize() const {
+    return m_abilities.size();
 }
 
-void Card::setHasAbility(bool value) {
-    m_hasAbility = value;
-}
+Ability* Card::ability(int index) {
+    if (index < 0 || index >= m_abilities.size()) {
+        return nullptr;
+    }
 
-QString Card::abilityName() const {
-    return m_abilityName;
-}
+    auto abilityPtr = m_abilities[index];
+    if (abilityPtr) {
+        auto abilityRawPtr = abilityPtr.get();
+        QQmlEngine::setObjectOwnership(abilityRawPtr, QQmlEngine::CppOwnership);
+        return abilityRawPtr;
+    }
 
-void Card::setAbilityName(const QString &value) {
-    m_abilityName = value;
+    return nullptr;
 }
-
-QString Card::abilityType() const {
-    return m_abilityType;
-}
-
-void Card::setAbilityType(const QString &value) {
-    m_abilityType = value;
-}
-
-QString Card::abilityText() const {
-    return m_abilityText;
-}
-
-void Card::setAbilityText(const QString &value) {
-    m_abilityText = value;
-}
-
 
 int Card::attackSize() const {
     return m_attacks.size();
@@ -131,9 +121,15 @@ QString Card::resistancesValue() const {
 void Card::fromJson(QJsonObject &json) {
     QString id = json["id"].toString();
     QString name = json["name"].toString();
-    QString set = json["set"].toString();
+    QString set = json["set"].toObject()["name"].toString();
     QString rarity = json["rarity"].toString();
-    QString subtype = json["subtype"].toString();
+    auto subtypeJsonArray = json["subtypes"].toArray();
+
+    QString subtype;
+    for (auto subtypeJson: subtypeJsonArray) {
+       subtype = subtypeJson.toString();
+    }
+
     QString supertype = json["supertype"].toString();
     auto typeJsonArray = json["types"].toArray();
     QStringList types;
@@ -141,7 +137,7 @@ void Card::fromJson(QJsonObject &json) {
         auto type = typeJson.toString();
         types.push_back(type);
     }
-    QString smallImageUrl = json["imageUrl"].toString();
+    QString smallImageUrl = json["images"].toObject()["small"].toString();
     QString hp = json["hp"].toString();
 
     m_id = id;
@@ -154,18 +150,27 @@ void Card::fromJson(QJsonObject &json) {
     m_smallImageUrl = smallImageUrl;
     m_hp = hp;
 
-    m_hasAdditionalText = json.contains("text");
-    if (m_hasAdditionalText) {
-        auto textJsonArray = json["text"].toArray();
-        m_additionalText = textJsonArray[0].toString();
+    bool hasAdditionalRule = json.contains("rules");
+    if (hasAdditionalRule) {
+        auto rulesJsonArray = json["rules"].toArray();
+        for (auto ruleJson: rulesJsonArray) {
+            QString rule = ruleJson.toString();
+            m_additionalRules.push_back(rule);
+        }
     }
 
-    m_hasAbility = json.contains("ability");
-    if (m_hasAbility) {
-        auto ability = json["ability"].toObject();
-        m_abilityName = ability["name"].toString();
-        m_abilityType = ability["type"].toString();
-        m_abilityText = ability["text"].toString();
+    bool hasAbility = json.contains("abilities");
+    if (hasAbility) {
+        auto abilitiesJsonArray = json["abilities"].toArray();
+        for (auto abilitiesJson: abilitiesJsonArray) {
+            AbilityPtr ability = std::make_shared<Ability>();
+            auto abilityJObject = abilitiesJson.toObject();
+            ability->setName(abilityJObject["name"].toString());
+            ability->setType(abilityJObject["type"].toString());
+            ability->setText(abilityJObject["text"].toString());
+
+            m_abilities.push_back(std::move(ability));
+        }
     }
 
     auto attacksJsonArray = json["attacks"].toArray();

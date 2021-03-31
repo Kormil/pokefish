@@ -53,13 +53,6 @@
     </message>
 </context>
 <context>
-    <name>AdditionalTextItem</name>
-    <message>
-        <source>Rules</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CardInDeckPage</name>
     <message>
         <source>Delete</source>
@@ -70,6 +63,10 @@
     <name>CardInfoPage</name>
     <message>
         <source>Add to deck</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rules</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

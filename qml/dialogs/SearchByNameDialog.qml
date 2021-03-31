@@ -38,8 +38,8 @@ Dialog {
 
     onAccepted: {
         search_parameters.name = searchField.text
-        search_parameters.type = typeComboBox.value !== "Any" ? typeComboBox.value : ""
-        search_parameters.subtype = subtypeComboBox.value !== "Any" ? subtypeComboBox.value : ""
+        search_parameters.type = typeComboBox.value
+        search_parameters.subtype = subtypeComboBox.value
 
 
         searcheddb.dbAdd(search_parameters)
@@ -161,14 +161,14 @@ Dialog {
                         Label {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
-                            text: model.type ? model.type : ""
+                            text: model.type !== "Any" ? model.type : ""
                             color: Theme.secondaryColor
                         }
 
                         Label {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
-                            text: model.subtype ? model.subtype : ""
+                            text: model.subtype !== "Any" ? model.subtype : ""
                             color: Theme.secondaryColor
                         }
                     }

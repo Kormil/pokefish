@@ -10,6 +10,7 @@
 #include <QString>
 
 #include "attack.h"
+#include "ability.h"
 
 class Card;
 class CardList;
@@ -30,14 +31,8 @@ class Card : public QObject
     Q_PROPERTY(QString smallImageUrl READ smallImageUrl NOTIFY dataChanged)
     Q_PROPERTY(QString hp READ hp NOTIFY dataChanged)
 
-    Q_PROPERTY(bool hasAdditionalText READ hasAdditionalText NOTIFY dataChanged)
-    Q_PROPERTY(QString additionalText READ additionalText NOTIFY dataChanged)
-
-    Q_PROPERTY(bool hasAbility READ hasAbility WRITE setHasAbility NOTIFY abilityChanged)
-    Q_PROPERTY(QString abilityName READ abilityName WRITE setAbilityName NOTIFY abilityChanged)
-    Q_PROPERTY(QString abilityType READ abilityType WRITE setAbilityType NOTIFY abilityChanged)
-    Q_PROPERTY(QString abilityText READ abilityText WRITE setAbilityText NOTIFY abilityChanged)
-
+    Q_PROPERTY(int rulesSize READ rulesSize NOTIFY dataChanged)
+    Q_PROPERTY(int abilitiesSize READ abilitiesSize NOTIFY dataChanged)
     Q_PROPERTY(int attackSize READ attackSize NOTIFY dataChanged)
 
     Q_PROPERTY(bool hasRetreatCost READ hasRetreatCost NOTIFY dataChanged)
@@ -64,17 +59,11 @@ public:
     QString smallImageUrl() const;
     QString hp() const;
 
-    bool hasAdditionalText() const;
-    QString additionalText() const;
+    int rulesSize() const;
+    Q_INVOKABLE QString rule(int index) const;
 
-    bool hasAbility() const;
-    void setHasAbility(bool value);
-    QString abilityName() const;
-    void setAbilityName(const QString &value);
-    QString abilityType() const;
-    void setAbilityType(const QString &value);
-    QString abilityText() const;
-    void setAbilityText(const QString &value);
+    int abilitiesSize() const;
+    Q_INVOKABLE Ability* ability(int index);
 
     int attackSize() const;
     Q_INVOKABLE Attack* attack(int index);
@@ -88,7 +77,6 @@ public:
 
 signals:
     void dataChanged();
-    void abilityChanged();
 
 private:
     QString m_id;
@@ -101,11 +89,7 @@ private:
     QString m_smallImageUrl;
     QString m_hp;
 
-    bool m_hasAbility = false;
-    QString m_abilityName;
-    QString m_abilityType;
-    QString m_abilityText;
-
+    std::vector<AbilityPtr> m_abilities;
     std::vector<AttackPtr> m_attacks;
 
     bool m_hasRetreatCost = false;
@@ -115,8 +99,8 @@ private:
     QString m_resistances;
     QString m_resistancesValue;
 
-    bool m_hasAdditionalText = false;
-    QString m_additionalText;
+    bool m_hasAdditionalRule = false;
+    QStringList m_additionalRules;
 };
 
 class CardList : public QObject

@@ -12,17 +12,6 @@ Item {
         id: column
         width: parent.width
 
-        Row {
-            anchors.right: parent.right
-            spacing: Theme.paddingMedium
-            Label {
-                id: typeLabel
-                text: qsTr("Rules")
-                color: Theme.secondaryColor
-                horizontalAlignment: Text.AlignRight
-            }
-        }
-
         Text {
             id: textLabel
             width: parent.width

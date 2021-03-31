@@ -63,7 +63,7 @@ void Connection::searchCardsByName(SearchParameters *parameters, std::function<v
         return;
     }
 
-    QString url = "https://api.pokemontcg.io/v1/cards?" + parsedParameters;
+    QString url = "https://api.pokemontcg.io/v2/cards?q=" + parsedParameters;
     QUrl searchUrl(url);
 
     Request* requestRaw = request(searchUrl);
@@ -83,7 +83,7 @@ void Connection::searchCardsByName(SearchParameters *parameters, std::function<v
 }
 
 void Connection::searchCardsById(const QString& cardId, std::function<void(CardPtr)> handler) {
-    QString url = "https://api.pokemontcg.io/v1/cards/" + cardId;
+    QString url = "https://api.pokemontcg.io/v2/cards/" + cardId;
     QUrl searchUrl(url);
 
     Request* requestRaw = request(searchUrl);
@@ -101,10 +101,9 @@ void Connection::searchCardsById(const QString& cardId, std::function<void(CardP
     });
     requestRaw->run();
 }
-#include <iostream>
+
 void Connection::searchCardsBySet(const QString& setId, std::function<void(CardListPtr)> handler) {
-    QString url = "https://api.pokemontcg.io/v1/cards?pageSize=350&setCode=" + setId;
-    std::cout << url.toStdString() << std::endl;
+    QString url = "https://api.pokemontcg.io/v2/cards?q=set.id:" + setId;
     QUrl searchUrl(url);
 
     Request* requestRaw = request(searchUrl);
@@ -129,7 +128,7 @@ CardListPtr Connection::parseCards(const QJsonDocument &jsonDocument) {
 
     CardListPtr cards = std::make_shared<CardList>();
 
-    auto response = jsonDocument.object()["cards"];
+    auto response = jsonDocument.object()["data"];
     if (response.isUndefined()) {
         return cards;
     }
@@ -151,7 +150,7 @@ CardPtr Connection::parseCard(const QJsonDocument &jsonDocument) {
     if (jsonDocument.isNull())
         return CardPtr(nullptr);
 
-    auto response = jsonDocument.object()["card"];
+    auto response = jsonDocument.object()["data"];
     auto card = std::make_shared<Card>();
     auto cardJson = response.toObject();
     card->fromJson(cardJson);
@@ -160,7 +159,7 @@ CardPtr Connection::parseCard(const QJsonDocument &jsonDocument) {
 }
 
 void Connection::searchAllSets(std::function<void(SetListPtr)> handler) {
-    QString url = "https://api.pokemontcg.io/v1/sets?pageSize=250";
+    QString url = "https://api.pokemontcg.io/v2/sets";
     QUrl searchUrl(url);
 
     Request* requestRaw = request(searchUrl);
@@ -185,7 +184,7 @@ SetListPtr Connection::parseSets(const QJsonDocument &jsonDocument) {
 
     SetListPtr sets = std::make_shared<SetList>();
 
-    auto response = jsonDocument.object()["sets"];
+    auto response = jsonDocument.object()["data"];
     if (response.isUndefined()) {
         return sets;
     }
@@ -209,7 +208,7 @@ SetListPtr Connection::parseSets(const QJsonDocument &jsonDocument) {
 }
 
 void Connection::searchAllTypes(std::function<void(const QStringList&)> handler) {
-    QString url = "https://api.pokemontcg.io/v1/types";
+    QString url = "https://api.pokemontcg.io/v2/types";
     QUrl searchUrl(url);
 
     Request* requestRaw = request(searchUrl);
@@ -219,7 +218,7 @@ void Connection::searchAllTypes(std::function<void(const QStringList&)> handler)
             std::cout << "CONNECTION ERROR" << std::endl;
             handler(QStringList{});
         } else {
-            QStringList types = parseArrayOfStrings("types", QJsonDocument::fromJson(responseArray));
+            QStringList types = parseArrayOfStrings("data", QJsonDocument::fromJson(responseArray));
             handler(types);
         }
 
@@ -229,7 +228,7 @@ void Connection::searchAllTypes(std::function<void(const QStringList&)> handler)
 }
 
 void Connection::searchAllSubtypes(std::function<void(const QStringList&)> handler) {
-    QString url = "https://api.pokemontcg.io/v1/subtypes";
+    QString url = "https://api.pokemontcg.io/v2/subtypes";
     QUrl searchUrl(url);
 
     Request* requestRaw = request(searchUrl);
@@ -239,7 +238,7 @@ void Connection::searchAllSubtypes(std::function<void(const QStringList&)> handl
             std::cout << "CONNECTION ERROR" << std::endl;
             handler(QStringList{});
         } else {
-            QStringList subtypes = parseArrayOfStrings("subtypes", QJsonDocument::fromJson(responseArray));
+            QStringList subtypes = parseArrayOfStrings("data", QJsonDocument::fromJson(responseArray));
             handler(subtypes);
         }
 

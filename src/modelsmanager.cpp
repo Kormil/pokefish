@@ -7,6 +7,7 @@
 
 #include "src/types/card.h"
 #include "src/types/attack.h"
+#include "src/types/ability.h"
 
 #include "src/searchparameters.h"
 
@@ -51,6 +52,7 @@ void ModelsManager::bindToQml(QQuickView * view)
 
     qmlRegisterType<Card>("Card", 1, 0, "Card");
     qmlRegisterType<Attack>("Card", 1, 0, "Attack");
+    qmlRegisterType<Ability>("Card", 1, 0, "Ability");
     qmlRegisterType<Card>("Set", 1, 0, "Set");
 }
 

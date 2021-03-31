@@ -23,6 +23,7 @@ SOURCES += \
            src/modelsmanager.cpp \
            src/settings.cpp \
            src/model/cardlistmodel.cpp \
+           src/types/ability.cpp \
            src/types/attack.cpp \
            src/types/card.cpp \
            src/types/deck.cpp \
@@ -38,6 +39,7 @@ HEADERS += src/types/card.h \
            src/request.h \
            src/modelsmanager.h \
            src/model/cardlistmodel.h \
+           src/types/ability.h \
            src/types/attack.h \
            src/types/deck.h \
            src/types/set.h

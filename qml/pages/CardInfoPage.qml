@@ -117,20 +117,38 @@ Page {
                 }
             }
 
-            AdditionalTextItem {
-                id: additionalTextInfo
-
-                visible: card ? card.hasAdditionalText : false
-                text: card ? card.additionalText : ""
+            Row {
+                anchors.right: parent.right
+                spacing: Theme.paddingMedium
+                Label {
+                    id: typeLabel
+                    text: qsTr("Rules")
+                    color: Theme.secondaryColor
+                    horizontalAlignment: Text.AlignRight
+                }
+                visible: card ? card.rulesSize : false
             }
 
-            AbilityInfo {
-                id: abilityInfo
+            Repeater {
+                model: card ? card.rulesSize : 0
 
-                visible: card ? card.hasAbility : false
-                name: card ? card.abilityName : ""
-                text: card ? card.abilityText : ""
-                type: card ? card.abilityType : ""
+                AdditionalTextItem {
+                    id: additionalTextInfo
+                    text: card.rule(index)
+                }
+            }
+
+            Repeater {
+                model: card ? card.abilitiesSize : 0
+
+                AbilityInfo {
+                    id: abilityInfo
+
+                    visible: true
+                    name: card.ability(index).name
+                    type: card.ability(index).type
+                    text: card.ability(index).text
+                }
             }
 
             Repeater {

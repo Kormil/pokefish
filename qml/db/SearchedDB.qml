@@ -3,11 +3,12 @@ import QtQuick.LocalStorage 2.0
 
 Item {
     Component.onCompleted: {
+        //dbRemoveDataBase()
         dbCreateDataBase()
     }
 
     function dbRemoveDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
         db.transaction(
                     function(tx) {
                         tx.executeSql('DROP TABLE Searched');
@@ -28,7 +29,7 @@ Item {
                         tx.executeSql('CREATE TABLE IF NOT EXISTS Searched(
                                         ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                         Name TEXT NOT NULL,
-                                        Type TEXT
+                                        Type TEXT,
                                         Subtype TEXT)');
                     })
     }

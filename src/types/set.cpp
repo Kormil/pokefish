@@ -16,9 +16,9 @@ QString Set::imageUrl() const {
 }
 
 void Set::fromJson(QJsonObject &json) {
-    QString id = json["code"].toString();
+    QString id = json["id"].toString();
     QString name = json["name"].toString();
-    QString imageUrl = json["logoUrl"].toString();
+    QString imageUrl = json["images"].toObject()["logo"].toString();
 
     m_id = id;
     m_name = name;
