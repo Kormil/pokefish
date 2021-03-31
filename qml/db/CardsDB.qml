@@ -8,7 +8,7 @@ Item {
     }
 
     function dbCreateDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
 
         db.transaction(
                     function(tx) {
@@ -35,7 +35,7 @@ Item {
 
     function dbGetCardsByDeckId(deckId, model) {
         model.clear()
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         var results = tx.executeSql('SELECT *
@@ -59,7 +59,7 @@ Item {
     }
 
     function dbRemoveDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         tx.executeSql('DROP TABLE Cards');
@@ -68,7 +68,7 @@ Item {
     }
 
     function dbAddCard(card, deckId) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         console.info("DeckId: " + deckId)
         console.info("card: " + card)
         db.transaction(
@@ -92,7 +92,7 @@ Item {
     }
 
     function dbGetCardIdByCardApiId(apiCardId, cardID) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         var results = tx.executeSql('SELECT CardID
@@ -106,7 +106,7 @@ Item {
     }
 
     function dbRemoveCardFromDeck(cardId, deckId) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.0", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         tx.executeSql('DELETE
