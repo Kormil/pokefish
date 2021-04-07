@@ -74,6 +74,7 @@ DISTFILES += \
     qml/pages/LicensePage.qml \
     qml/dialogs/SearchByNameDialog.qml \
     harbour-pokefish/qml/items/AdditionalTextItem.qml \
+    qml/pages/SettingsPage.qml \
     rpm/harbour-pokefish.changes.in \
     rpm/harbour-pokefish.changes.run.in \
     rpm/harbour-pokefish.spec \

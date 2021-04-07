@@ -44,6 +44,8 @@ void ModelsManager::deleteModels()
 void ModelsManager::bindToQml(QQuickView * view)
 {
     qmlRegisterType<CardListModel>("CardListModel", 1, 0, "CardListModel");
+    qmlRegisterType<CardListProxyModel>("CardListModel", 1, 0, "CardListProxyModel");
+    qmlRegisterUncreatableType<SortCards>("CardListModel", 1, 0, "SortCards", "Cannot create SortCard in QML");
     qmlRegisterType<SetListModel>("SetListModel", 1, 0, "SetListModel");
     view->rootContext()->setContextProperty(QStringLiteral("searchedCardListModel"), m_searchedCardListModel.get());
     view->rootContext()->setContextProperty(QStringLiteral("setListModel"), m_setListModel.get());

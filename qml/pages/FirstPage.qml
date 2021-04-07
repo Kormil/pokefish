@@ -22,6 +22,13 @@ Page {
                     pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
                 }
             }
+
+            MenuItem {
+                text: qsTr("Settings")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+                }
+            }
         }
 
         // Place our content in a Column.  The PageHeader is always placed at the top

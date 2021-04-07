@@ -8,7 +8,11 @@ Item {
     }
 
     function dbCreateDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
+        if (db.version === "1.0") {
+            db.changeVersion("1.0", "1.1", function(tx) {
+            }
+        )}
 
         db.transaction(
                     function(tx) {
@@ -34,7 +38,7 @@ Item {
     }
 
     function dbGetCardsByDeckId(deckId, model) {
-        model.clear()
+        //model.clear()
         var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
         db.transaction(
                     function(tx) {
@@ -44,7 +48,7 @@ Item {
                                                     ON Cards.CardId = Decks_Cards.CardID
                                                     WHERE Decks_Cards.DeckID = ?', [deckId])
                         for (var i = 0; i < results.rows.length; i++) {
-                            model.append({
+                            model.append( {
                                             card_id: results.rows.item(i).ApiCardId,
                                             name: results.rows.item(i).Name,
                                             types: results.rows.item(i).Type,
@@ -53,7 +57,8 @@ Item {
                                             set: results.rows.item(i).CardSet,
                                             rarity: results.rows.item(i).Rarity,
                                             small_image_url: results.rows.item(i).Image
-                                        })
+                                        }
+                            )
                         }
                     })
     }

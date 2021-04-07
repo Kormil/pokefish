@@ -13,12 +13,23 @@ class QQmlEngine;
 class Settings : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool sortCards READ sortCards WRITE setSortCards NOTIFY sortingChanged)
+    Q_PROPERTY(int sortCardsBy READ sortCardsBy WRITE setSortCardsBy NOTIFY sortingChanged)
+
 public:
     static QObject *instance(QQmlEngine *engine, QJSEngine *scriptEngine);
+    static void bindToQml();
 
     Q_INVOKABLE QString license();
 
-    static void bindToQml();
+    bool sortCards() const;
+    void setSortCards(bool value);
+
+    int sortCardsBy() const;
+    void setSortCardsBy(int value);
+
+signals:
+    void sortingChanged();
 
 private:
     explicit Settings(QObject *parent = nullptr);

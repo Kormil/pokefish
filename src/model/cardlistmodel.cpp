@@ -1,6 +1,120 @@
 #include "cardlistmodel.h"
 #include <QtQml>
 
+CardListProxyModel::CardListProxyModel(QObject *parent) :
+    QSortFilterProxyModel(parent)
+{
+}
+
+bool CardListProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+{
+    if (!m_sorting) {
+        return false;
+    }
+
+    if (!source_right.isValid() || !source_left.isValid()) {
+        return false;
+    }
+
+    auto roles = roleNames();
+    if (m_sortedBy >= SortCards::ByType)
+    {
+        int role = roles.key("types");
+        QVariant leftData = sourceModel()->data(source_left, role);
+        QVariant rightData = sourceModel()->data(source_right, role);
+
+        if (!leftData.isValid()) {
+            return false;
+        }
+
+        if (!rightData.isValid()) {
+            return true;
+        }
+
+        int result = QString::localeAwareCompare(leftData.toString(), rightData.toString());
+        if (result != 0) {
+            return result < 0;
+        }
+    }
+
+    if (m_sortedBy >= SortCards::ByName)
+    {
+        int role = roles.key("name");
+        QVariant leftData = sourceModel()->data(source_left, role);
+        QVariant rightData = sourceModel()->data(source_right, role);
+
+        return QString::localeAwareCompare(leftData.toString(), rightData.toString()) < 0;
+    }
+
+    return false;
+}
+
+QVariant CardListProxyModel::data(const QModelIndex &index, int role) const
+{
+    auto model = sourceModel();
+    if (!index.isValid() || model == nullptr)
+        return QVariant();
+
+    auto mappedIndex = mapToSource(index);
+    auto result = model->data(mappedIndex, role);
+    return result;
+}
+
+QHash<int, QByteArray> CardListProxyModel::roleNames() const
+{
+    auto model = sourceModel();
+    if (!model) {
+        return QHash<int, QByteArray>();
+    }
+
+    return model->roleNames();
+}
+
+int CardListProxyModel::rowCount(const QModelIndex &parent) const
+{
+    if (parent.isValid() || m_cardListModel == nullptr) {
+        return 0;
+    }
+
+    return QSortFilterProxyModel::rowCount(parent);
+}
+
+SortCards::EnSortCards CardListProxyModel::sortedBy() const
+{
+    return m_sortedBy;
+}
+
+void CardListProxyModel::setSortedBy(const SortCards::EnSortCards &sortedBy)
+{
+    m_sortedBy = sortedBy;
+    invalidate();
+}
+
+QAbstractListModel *CardListProxyModel::cardListModel() const
+{
+    return m_cardListModel;
+}
+
+void CardListProxyModel::setCardListModel(QAbstractListModel *cardListModel)
+{
+    m_cardListModel = cardListModel;
+
+    setSourceModel(m_cardListModel);
+    invalidateFilter();
+    sort(0);
+}
+
+bool CardListProxyModel::sorting() const
+{
+    return m_sorting;
+}
+
+void CardListProxyModel::setSorting(bool sorting)
+{
+    m_sorting = sorting;
+    invalidateFilter();
+}
+
 CardListModel::CardListModel(QObject *parent)
     : QAbstractListModel(parent)
 {

@@ -9,11 +9,53 @@
 #include "src/types/card.h"
 
 class ModelsManager;
+class CardListModel;
+
+class SortCards : public QObject {
+    Q_OBJECT
+public:
+    enum EnSortCards
+    {
+        ByName,
+        ByType
+    };
+    Q_ENUM(EnSortCards)
+};
+
+class CardListProxyModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+    Q_PROPERTY(QAbstractListModel* cardListModel READ cardListModel WRITE setCardListModel)
+    Q_PROPERTY(bool sorting READ sorting WRITE setSorting)
+    Q_PROPERTY(SortCards::EnSortCards sortBy READ sortedBy WRITE setSortedBy)
+
+public:
+    CardListProxyModel(QObject *parent = nullptr);
+    virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+
+    SortCards::EnSortCards sortedBy() const;
+    void setSortedBy(const SortCards::EnSortCards &sortedBy);
+
+    QAbstractListModel *cardListModel() const;
+    void setCardListModel(QAbstractListModel *cardListModel);
+
+    bool sorting() const;
+    void setSorting(bool sorting);
+
+private:
+    QAbstractListModel * m_cardListModel;
+    bool m_sorting = false;
+    SortCards::EnSortCards m_sortedBy = SortCards::EnSortCards::ByName;
+};
 
 class CardListModel : public QAbstractListModel
 {
     Q_OBJECT
 
+public:
     enum CardListRole
     {
         NameRole = Qt::UserRole + 1,
@@ -26,7 +68,6 @@ class CardListModel : public QAbstractListModel
         SmallImageRole
     };
 
-public:
     explicit CardListModel(QObject *parent = nullptr);
     // Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

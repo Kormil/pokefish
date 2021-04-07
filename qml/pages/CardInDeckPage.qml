@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import CardListModel 1.0
 import Controller 1.0
+import Settings 1.0
 
 import "../items"
 import "../db"
@@ -45,7 +46,13 @@ Page {
         SilicaListView {
             id: listView
 
-            model: cardList
+            model: CardListProxyModel {
+                id: cardListProxyModel
+                cardListModel: cardList
+                sorting: Settings.sortCards
+                sortBy: Settings.sortCardsBy
+            }
+
             currentIndex: -1
             anchors.fill: parent
             spacing: Theme.paddingMedium

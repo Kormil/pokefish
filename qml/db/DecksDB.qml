@@ -8,7 +8,7 @@ Item {
     }
 
     function dbRemoveDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
         db.transaction(
                     function(tx) {
                         tx.executeSql('DROP TABLE Decks');
@@ -16,7 +16,12 @@ Item {
     }
 
     function dbCreateDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
+        if (db.version === "1.0") {
+            db.changeVersion("1.0", "1.1", function(tx) {
+            }
+        )}
+
         db.transaction(
                     function(tx) {
                         tx.executeSql('CREATE TABLE IF NOT EXISTS Decks(

@@ -4,10 +4,41 @@
 #include <QVariant>
 #include <sailfishapp.h>
 
+#include "model/cardlistmodel.h"
+
+#define CARDS_SORT_SETTINGS_PATH QStringLiteral("cards/sort")
+#define CARDS_SORT_BY_SETTINGS_PATH QStringLiteral("cards/sort_by")
+
 Settings::Settings(QObject *parent) :
     m_settings(std::make_unique<QSettings>(parent))
 {
 
+}
+
+int Settings::sortCardsBy() const
+{
+    return m_settings->value(CARDS_SORT_BY_SETTINGS_PATH, 0).toInt();
+}
+
+void Settings::setSortCardsBy(int value)
+{
+    if (sortCardsBy() != value) {
+        m_settings->setValue(CARDS_SORT_BY_SETTINGS_PATH, value);
+        emit sortingChanged();
+    }
+}
+
+bool Settings::sortCards() const
+{
+    return m_settings->value(CARDS_SORT_SETTINGS_PATH, false).toBool();
+}
+
+void Settings::setSortCards(bool value)
+{
+    if (sortCards() != value) {
+        m_settings->setValue(CARDS_SORT_SETTINGS_PATH, value);
+        emit sortingChanged();
+    }
 }
 
 QObject *Settings::instance(QQmlEngine *engine, QJSEngine *scriptEngine)
