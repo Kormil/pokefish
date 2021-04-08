@@ -203,6 +203,10 @@
         <source>Types</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Supertype</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmallCardItem</name>

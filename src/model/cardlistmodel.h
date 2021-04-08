@@ -17,7 +17,8 @@ public:
     enum EnSortCards
     {
         ByName,
-        ByType
+        ByType,
+        BySupertype
     };
     Q_ENUM(EnSortCards)
 };

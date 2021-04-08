@@ -17,6 +17,26 @@ bool CardListProxyModel::lessThan(const QModelIndex &source_left, const QModelIn
     }
 
     auto roles = roleNames();
+    if (m_sortedBy >= SortCards::BySupertype)
+    {
+        int role = roles.key("super_type");
+        QVariant leftData = sourceModel()->data(source_left, role);
+        QVariant rightData = sourceModel()->data(source_right, role);
+
+        if (!leftData.isValid()) {
+            return false;
+        }
+
+        if (!rightData.isValid()) {
+            return true;
+        }
+
+        int result = QString::localeAwareCompare(leftData.toString(), rightData.toString());
+        if (result != 0) {
+            return result < 0;
+        }
+    }
+
     if (m_sortedBy >= SortCards::ByType)
     {
         int role = roles.key("types");

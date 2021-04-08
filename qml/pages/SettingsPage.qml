@@ -38,6 +38,7 @@ Page {
                 menu: ContextMenu {
                     MenuItem { text: qsTr("Name") }
                     MenuItem { text: qsTr("Types") }
+                    MenuItem { text: qsTr("Supertype") }
                 }
 
                 //description: qsTr("Works only with the screen on. If the screen is off, the program will automatically look for the nearest station after turning the screen on.")
