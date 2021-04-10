@@ -18,7 +18,8 @@ public:
     {
         ByName,
         ByType,
-        BySupertype
+        BySupertype,
+        ByNationalPokedexNumber
     };
     Q_ENUM(EnSortCards)
 };
@@ -66,7 +67,8 @@ public:
         SetRole,
         TypesRole,
         RarityRole,
-        SmallImageRole
+        SmallImageRole,
+        NationalPokedexNumberRole
     };
 
     explicit CardListModel(QObject *parent = nullptr);

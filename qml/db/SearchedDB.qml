@@ -4,7 +4,6 @@ import QtQuick.LocalStorage 2.0
 Item {
     Component.onCompleted: {
         //dbRemoveDataBase()
-        dbCreateDataBase()
     }
 
     function dbRemoveDataBase() {
@@ -15,27 +14,8 @@ Item {
                     })
     }
 
-    function dbCreateDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
-        if (db.version === "1.0") {
-            db.changeVersion("1.0", "1.1", function(tx) {
-                tx.executeSql("ALTER TABLE Searched ADD COLUMN Type TEXT");
-                tx.executeSql("ALTER TABLE Searched ADD COLUMN Subtype TEXT");
-            }
-        )}
-
-        db.transaction(
-                    function(tx) {
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS Searched(
-                                        ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                        Name TEXT NOT NULL,
-                                        Type TEXT,
-                                        Subtype TEXT)');
-                    })
-    }
-
     function dbAdd(parameters) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         var result = tx.executeSql(
@@ -56,7 +36,7 @@ Item {
     }
 
     function dbReadAll(model) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
         db.transaction(function (tx) {
             var results = tx.executeSql(
                         'SELECT *
@@ -75,7 +55,7 @@ Item {
     }
 
     function dbClean(limit) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
         var searchCount
 
         db.transaction(

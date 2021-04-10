@@ -51,6 +51,7 @@ DISTFILES += \
     harbour-pokefish.desktop \
     qml/cover/CoverPage.qml \
     qml/db/CardsDB.qml \
+    qml/db/DatabaseManager.qml \
     qml/db/DecksDB.qml \
     qml/db/SearchedDB.qml \
     qml/dialogs/CreateDeckDialog.qml \

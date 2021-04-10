@@ -29,8 +29,6 @@ Dialog {
     acceptDestinationAction: PageStackAction.Push
 
     Component.onCompleted: {
-        searcheddb.dbCreateDataBase()
-
         Controller.resetSearchResult();
         searchedList.clear()
         searcheddb.dbReadAll(searchedList)

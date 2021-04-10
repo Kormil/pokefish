@@ -1,10 +1,13 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import "../db"
 import "../items"
 import "../dialogs"
 
 Page {
+    DatabaseManager {}
+
     property string colorScheme: Theme.colorScheme == Theme.LightOnDark ? "light" : "dark"
     id: page
 

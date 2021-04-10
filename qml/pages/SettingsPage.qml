@@ -39,6 +39,7 @@ Page {
                     MenuItem { text: qsTr("Name") }
                     MenuItem { text: qsTr("Types") }
                     MenuItem { text: qsTr("Supertype") }
+                    MenuItem { text: qsTr("National pokedex number") }
                 }
 
                 //description: qsTr("Works only with the screen on. If the screen is off, the program will automatically look for the nearest station after turning the screen on.")

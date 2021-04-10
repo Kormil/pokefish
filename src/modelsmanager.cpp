@@ -78,8 +78,6 @@ void ModelsManager::searchCardsByIdList(const QStringList& idList, std::function
         return;
     }
 
-    if (m_searchedCardListModel)
-
     //TODO przerobić żeby ten callback był jak już wszystkie się pobiorą
     for (const auto& id: idList) {
         if (m_searchedCardListModel->exist(id)) {

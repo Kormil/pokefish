@@ -17,6 +17,34 @@ bool CardListProxyModel::lessThan(const QModelIndex &source_left, const QModelIn
     }
 
     auto roles = roleNames();
+    if (m_sortedBy >= SortCards::ByNationalPokedexNumber)
+    {
+        int role = roles.key("national_number");
+        QVariant leftData = sourceModel()->data(source_left, role);
+        QVariant rightData = sourceModel()->data(source_right, role);
+
+        if (!leftData.isValid()) {
+            return false;
+        }
+
+        if (!rightData.isValid()) {
+            return true;
+        }
+
+        int leftInt = leftData.toInt();
+        int rightInt = rightData.toInt();
+        if (leftInt != rightInt) {
+            if (!leftInt) {
+                return false;
+            }
+            if (!rightInt) {
+                return true;
+            }
+
+            return leftInt < rightInt;
+        }
+    }
+
     if (m_sortedBy >= SortCards::BySupertype)
     {
         int role = roles.key("super_type");
@@ -184,6 +212,9 @@ QVariant CardListModel::data(const QModelIndex &index, int role) const
     case CardListRole::SmallImageRole: {
         return QVariant(card->smallImageUrl());
     }
+    case CardListRole::NationalPokedexNumberRole: {
+        return QVariant(card->nationalPokedexNumber());
+    }
     }
 
     return QVariant();
@@ -200,6 +231,7 @@ QHash<int, QByteArray> CardListModel::roleNames() const
     names[CardListRole::TypesRole] = "types";
     names[CardListRole::RarityRole] = "rarity";
     names[CardListRole::SmallImageRole] = "small_image_url";
+    names[CardListRole::NationalPokedexNumberRole] = "national_number";
     return names;
 }
 

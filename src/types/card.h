@@ -42,10 +42,10 @@ class Card : public QObject
     Q_PROPERTY(QString resistances READ resistances NOTIFY dataChanged)
     Q_PROPERTY(QString resistancesValue READ resistancesValue NOTIFY dataChanged)
 
+    Q_PROPERTY(int nationalPokedexNumber READ nationalPokedexNumber NOTIFY dataChanged)
+
 public:
     Card() = default;
-    Card& operator=(const Card&) = default;
-    Card& operator=(Card&&) = default;
 
     void fromJson(QJsonObject& json);
     QString name() const;
@@ -75,6 +75,9 @@ public:
     QString resistances() const;
     QString resistancesValue() const;
 
+    int nationalPokedexNumber() const;
+    void setNationalPokedexNumber(int nationalPokedexNumber);
+
 signals:
     void dataChanged();
 
@@ -101,6 +104,8 @@ private:
 
     bool m_hasAdditionalRule = false;
     QStringList m_additionalRules;
+
+    int m_nationalPokedexNumber;
 };
 
 class CardList : public QObject

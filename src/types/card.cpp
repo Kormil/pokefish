@@ -118,6 +118,17 @@ QString Card::resistancesValue() const {
     return m_resistancesValue;
 }
 
+int Card::nationalPokedexNumber() const
+{
+    return m_nationalPokedexNumber;
+}
+
+void Card::setNationalPokedexNumber(int nationalPokedexNumber)
+{
+    m_nationalPokedexNumber = nationalPokedexNumber;
+    emit dataChanged();
+}
+
 void Card::fromJson(QJsonObject &json) {
     QString id = json["id"].toString();
     QString name = json["name"].toString();
@@ -212,6 +223,12 @@ void Card::fromJson(QJsonObject &json) {
     if (m_hasRetreatCost) {
         int retreatCost = json["convertedRetreatCost"].toInt();
         m_retreatCost = retreatCost;
+    }
+
+    auto nationalPokedexNumberJsonArray = json["nationalPokedexNumbers"].toArray();
+    for (auto numberJson: nationalPokedexNumberJsonArray) {
+       m_nationalPokedexNumber = numberJson.toInt();
+       break; //TODO should get all number not only first one
     }
 }
 

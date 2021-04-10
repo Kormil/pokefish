@@ -207,6 +207,10 @@
         <source>Supertype</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>National pokedex number</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmallCardItem</name>

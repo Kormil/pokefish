@@ -253,6 +253,7 @@ Page {
 
             mainColumn.visible = true
             card = searchedCardListModel.card(cardId)
+            cardsdb.dbUpdateCard(card, cardId)
         }
     }
 

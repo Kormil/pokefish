@@ -4,7 +4,6 @@ import QtQuick.LocalStorage 2.0
 Item {
     Component.onCompleted: {
         //dbRemoveDataBase()
-        dbCreateDataBase()
     }
 
     function dbRemoveDataBase() {
@@ -15,23 +14,8 @@ Item {
                     })
     }
 
-    function dbCreateDataBase() {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
-        if (db.version === "1.0") {
-            db.changeVersion("1.0", "1.1", function(tx) {
-            }
-        )}
-
-        db.transaction(
-                    function(tx) {
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS Decks(
-                                        DeckID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                        Name TEXT NOT NULL)');
-                    })
-    }
-
     function dbAddDeck(deckName) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         tx.executeSql('INSERT INTO Decks (Name) VALUES(?)', [ deckName ]);
@@ -40,7 +24,7 @@ Item {
     }
 
     function dbEditDeck(deckId, deckName) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         tx.executeSql('UPDATE Decks
@@ -51,7 +35,7 @@ Item {
     }
 
     function dbRemoveDeck(deckId) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
         db.transaction(
                     function(tx) {
                         tx.executeSql('DELETE
@@ -63,7 +47,7 @@ Item {
 
     function dbReadAllDecks(model) {
         model.clear()
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
         db.transaction(function (tx) {
             var results = tx.executeSql(
                         'SELECT Decks.DeckID, Decks.name, COUNT(Decks_Cards.CardID) AS allCards
@@ -83,7 +67,7 @@ Item {
     }
 
     function dbNumberOfCards(model, cardId) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
         db.transaction(function (tx) {
             for (var i = 0; i < model.count; i++) {
                 var results = tx.executeSql(
