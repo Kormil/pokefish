@@ -29,6 +29,7 @@ class Card : public QObject
     Q_PROPERTY(QString subtype READ subtype NOTIFY dataChanged)
     Q_PROPERTY(QString supertype READ supertype NOTIFY dataChanged)
     Q_PROPERTY(QString smallImageUrl READ smallImageUrl NOTIFY dataChanged)
+    Q_PROPERTY(QString largeImageUrl READ largeImageUrl NOTIFY dataChanged)
     Q_PROPERTY(QString hp READ hp NOTIFY dataChanged)
 
     Q_PROPERTY(int rulesSize READ rulesSize NOTIFY dataChanged)
@@ -57,6 +58,7 @@ public:
     QString subtype() const;
     QString supertype() const;
     QString smallImageUrl() const;
+    QString largeImageUrl() const;
     QString hp() const;
 
     int rulesSize() const;
@@ -90,6 +92,7 @@ private:
     QString m_subtype;
     QString m_supertype;
     QString m_smallImageUrl;
+    QString m_largeImageUrl;
     QString m_hp;
 
     std::vector<AbilityPtr> m_abilities;

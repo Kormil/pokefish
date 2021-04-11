@@ -40,6 +40,10 @@ QString Card::smallImageUrl() const {
     return m_smallImageUrl;
 }
 
+QString Card::largeImageUrl() const {
+    return m_largeImageUrl;
+}
+
 QString Card::hp() const {
     return m_hp;
 }
@@ -149,6 +153,7 @@ void Card::fromJson(QJsonObject &json) {
         types.push_back(type);
     }
     QString smallImageUrl = json["images"].toObject()["small"].toString();
+    QString largeImageUrl = json["images"].toObject()["large"].toString();
     QString hp = json["hp"].toString();
 
     m_id = id;
@@ -159,6 +164,7 @@ void Card::fromJson(QJsonObject &json) {
     m_supertype = supertype;
     m_types = types;
     m_smallImageUrl = smallImageUrl;
+    m_largeImageUrl = largeImageUrl;
     m_hp = hp;
 
     bool hasAdditionalRule = json.contains("rules");

@@ -101,19 +101,25 @@ Page {
                 }
             }
 
-            Item {
+            BackgroundItem {
                 id: cardItem
                 height: page.height / 2
-                width: page.width * 0.7
+                width: page.width
                 anchors.horizontalCenter: parent.horizontalCenter
+                anchors.margins: Theme.horizontalPageMargin
 
                 Image {
                     id: bigCardImage
                     anchors.fill: parent
                     sourceSize.height: parent.height
-                    sourceSize.width: parent.width
+                    width: page.width * 0.7
                     fillMode: Image.PreserveAspectFit
                     source: card ? Qt.resolvedUrl(card.smallImageUrl) : ""
+
+                }
+
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("BigCardPage.qml"), {card: card})
                 }
             }
 

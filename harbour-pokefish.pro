@@ -11,7 +11,6 @@
 
 # The name of your application
 TARGET = harbour-pokefish
-
 CONFIG += sailfishapp
 
 SOURCES += \
@@ -65,6 +64,7 @@ DISTFILES += \
     qml/items/TextButton.qml \
     qml/items/SmallCardItem.qml \
     qml/items/WeaknessInfoItem.qml \
+    qml/pages/BigCardPage.qml \
     qml/pages/CardInDeckPage.qml \
     qml/pages/DeckListPage.qml \
     qml/pages/FirstPage.qml \
