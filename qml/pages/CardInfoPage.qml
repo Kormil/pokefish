@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import CardListModel 1.0
 import Controller 1.0
+import Settings 1.0
 
 import "../items"
 import "../dialogs"
@@ -112,10 +113,9 @@ Page {
                     id: bigCardImage
                     anchors.fill: parent
                     sourceSize.height: parent.height
-                    width: page.width * 0.7
+                    sourceSize.width: page.width * 0.7
                     fillMode: Image.PreserveAspectFit
-                    source: card ? Qt.resolvedUrl(card.smallImageUrl) : ""
-
+                    source: card ? Qt.resolvedUrl(Settings.alwaysLargeImages ? card.largeImageUrl : card.smallImageUrl) : ""
                 }
 
                 onClicked: {

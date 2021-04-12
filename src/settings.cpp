@@ -8,6 +8,7 @@
 
 #define CARDS_SORT_SETTINGS_PATH QStringLiteral("cards/sort")
 #define CARDS_SORT_BY_SETTINGS_PATH QStringLiteral("cards/sort_by")
+#define NETWORK_ALWAYS_LARGE_IMAGES_SETTINGS_PATH QStringLiteral("network/always_large_images")
 
 Settings::Settings(QObject *parent) :
     m_settings(std::make_unique<QSettings>(parent))
@@ -25,6 +26,19 @@ void Settings::setSortCardsBy(int value)
     if (sortCardsBy() != value) {
         m_settings->setValue(CARDS_SORT_BY_SETTINGS_PATH, value);
         emit sortingChanged();
+    }
+}
+
+bool Settings::alwaysLargeImages() const
+{
+    return m_settings->value(NETWORK_ALWAYS_LARGE_IMAGES_SETTINGS_PATH, false).toBool();
+}
+
+void Settings::setAlwaysLargeImages(bool value)
+{
+    if (alwaysLargeImages() != value) {
+        m_settings->setValue(NETWORK_ALWAYS_LARGE_IMAGES_SETTINGS_PATH, value);
+        emit alwaysLargeImagesChanged();
     }
 }
 

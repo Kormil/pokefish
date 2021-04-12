@@ -211,6 +211,10 @@
         <source>National pokedex number</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Always load large images</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmallCardItem</name>

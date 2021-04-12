@@ -20,6 +20,16 @@ Page {
             }
 
             TextSwitch {
+                id: alwaysLargeImagesTextSwitch
+                text: qsTr("Always load large images")
+                checked: Settings.alwaysLargeImages
+
+                onCheckedChanged: {
+                    Settings.alwaysLargeImages = checked
+                }
+            }
+
+            TextSwitch {
                 id: sortCardsTextSwitch
                 text: qsTr("Sort cards")
                 checked: Settings.sortCards

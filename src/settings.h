@@ -15,6 +15,7 @@ class Settings : public QObject
     Q_OBJECT
     Q_PROPERTY(bool sortCards READ sortCards WRITE setSortCards NOTIFY sortingChanged)
     Q_PROPERTY(int sortCardsBy READ sortCardsBy WRITE setSortCardsBy NOTIFY sortingChanged)
+    Q_PROPERTY(bool alwaysLargeImages READ alwaysLargeImages WRITE setAlwaysLargeImages NOTIFY alwaysLargeImagesChanged)
 
 public:
     static QObject *instance(QQmlEngine *engine, QJSEngine *scriptEngine);
@@ -28,8 +29,12 @@ public:
     int sortCardsBy() const;
     void setSortCardsBy(int value);
 
+    bool alwaysLargeImages() const;
+    void setAlwaysLargeImages(bool value);
+
 signals:
     void sortingChanged();
+    void alwaysLargeImagesChanged();
 
 private:
     explicit Settings(QObject *parent = nullptr);
