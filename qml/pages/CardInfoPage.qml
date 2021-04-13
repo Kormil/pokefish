@@ -116,6 +116,25 @@ Page {
                     sourceSize.width: page.width * 0.7
                     fillMode: Image.PreserveAspectFit
                     source: card ? Qt.resolvedUrl(Settings.alwaysLargeImages ? card.largeImageUrl : card.smallImageUrl) : ""
+
+                     onStatusChanged: {
+                         if (bigCardImage.status == Image.Ready) {
+                             loadingImageIndicator.running = false
+                             loadingImageIndicator.visible = false
+                         } else if (bigCardImage.status == Image.Loading) {
+                             loadingImageIndicator.running = true
+                             loadingImageIndicator.visible = true
+                         }
+                     }
+                }
+
+                BusyIndicator {
+                    id: loadingImageIndicator
+                    anchors.centerIn: parent
+                    running: true
+                    size: BusyIndicatorSize.Medium
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: false
                 }
 
                 onClicked: {

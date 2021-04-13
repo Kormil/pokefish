@@ -19,14 +19,39 @@ Item {
         spacing: Theme.paddingLarge
 
         id: row
-        Image {
-            id: icon
+        Item {
             height: parent.height
-            sourceSize.height: parent.height
-            fillMode: Image.PreserveAspectFit
-            source: Qt.resolvedUrl(card.small_image_url)
-            smooth: false
-            cache: true
+            width: parent.height * 0.8
+
+            Image {
+                id: icon
+                height: parent.height
+                sourceSize.height: parent.height
+                fillMode: Image.PreserveAspectFit
+                source: Qt.resolvedUrl(card.small_image_url)
+                smooth: false
+                cache: true
+
+                onStatusChanged: {
+                    if (icon.status == Image.Ready) {
+                        loadingImageIndicator.running = false
+                        loadingImageIndicator.visible = false
+                    } else if (icon.status == Image.Loading) {
+                        loadingImageIndicator.running = true
+                        loadingImageIndicator.visible = true
+                    }
+                }
+            }
+
+            BusyIndicator {
+                id: loadingImageIndicator
+                anchors.centerIn: parent
+                running: true
+                size: BusyIndicatorSize.Small
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: false
+            }
         }
         Column {
             Row {
