@@ -17,6 +17,7 @@ Item {
     Row {
         x: Theme.horizontalPageMargin
         spacing: Theme.paddingLarge
+        height: nameRow.height + setRow.height * 3
 
         id: row
         Item {
@@ -100,6 +101,7 @@ Item {
 
             Row {
                 id: typeRow
+                visible: card.types.length
                 spacing: Theme.paddingSmall
                 Label {
                     text: qsTr("Types")
