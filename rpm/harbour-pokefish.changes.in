@@ -12,6 +12,16 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Fri Apr 16 2021 Bartłomiej Seliga <bartek.seliga@hotmail.com> 1.1.0-1
+- Migrate to api v2
+- Added 'type' and 'subtype' for searching
+- Added sorting to cards
+- Added page with large picture
+- Added option 'Always get large pictures'
+- Added busy indicatior when pictues are loading
+- Fixed empty types label in trainer and energy cards
+- Fixed showing only one rule on card
+
 * Sun Jan 10 2020 Bartłomiej Seliga <bartek.seliga@hotmail.com> 1.0.0-1
 - Initial release
 
