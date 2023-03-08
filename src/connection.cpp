@@ -128,12 +128,13 @@ CardListPtr Connection::parseCards(const QJsonDocument &jsonDocument) {
 
     CardListPtr cards = std::make_shared<CardList>();
 
-    auto response = jsonDocument.object()["data"];
-    if (response.isUndefined()) {
+    const auto& object = jsonDocument.object();
+    const auto& data = object["data"];
+    if (data.isUndefined()) {
         return cards;
     }
 
-    QJsonArray results = response.toArray();
+    QJsonArray results = data.toArray();
 
     for (const auto& result: results) {
         auto card = std::make_shared<Card>();
@@ -150,9 +151,10 @@ CardPtr Connection::parseCard(const QJsonDocument &jsonDocument) {
     if (jsonDocument.isNull())
         return CardPtr(nullptr);
 
-    auto response = jsonDocument.object()["data"];
+    const auto& object = jsonDocument.object();
+    const auto& data = object["data"];
     auto card = std::make_shared<Card>();
-    auto cardJson = response.toObject();
+    auto cardJson = data.toObject();
     card->fromJson(cardJson);
 
     return std::move(card);
@@ -184,12 +186,13 @@ SetListPtr Connection::parseSets(const QJsonDocument &jsonDocument) {
 
     SetListPtr sets = std::make_shared<SetList>();
 
-    auto response = jsonDocument.object()["data"];
-    if (response.isUndefined()) {
+    const auto& object = jsonDocument.object();
+    const auto& data = object["data"];
+    if (data.isUndefined()) {
         return sets;
     }
 
-    QJsonArray reverseResults = response.toArray();
+    QJsonArray reverseResults = data.toArray();
     QJsonArray results;
 
     for (const auto& result: reverseResults) {
