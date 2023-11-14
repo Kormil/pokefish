@@ -15,7 +15,7 @@ Item {
     }
 
     function dbAdd(parameters) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.2.0", "", 1000000);
         db.transaction(
                     function(tx) {
                         var result = tx.executeSql(
@@ -36,7 +36,7 @@ Item {
     }
 
     function dbReadAll(model) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.2.0", "", 1000000);
         db.transaction(function (tx) {
             var results = tx.executeSql(
                         'SELECT *
@@ -55,7 +55,7 @@ Item {
     }
 
     function dbClean(limit) {
-        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.1.1", "", 1000000);
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.2.0", "", 1000000);
         var searchCount
 
         db.transaction(

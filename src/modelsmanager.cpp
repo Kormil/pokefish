@@ -43,10 +43,13 @@ void ModelsManager::deleteModels()
 
 void ModelsManager::bindToQml(QQuickView * view)
 {
+    qRegisterMetaType<CardListModel::CardListRole>("CardListModel::CardListRole");
+
     qmlRegisterType<CardListModel>("CardListModel", 1, 0, "CardListModel");
     qmlRegisterType<CardListProxyModel>("CardListModel", 1, 0, "CardListProxyModel");
     qmlRegisterUncreatableType<SortCards>("CardListModel", 1, 0, "SortCards", "Cannot create SortCard in QML");
     qmlRegisterType<SetListModel>("SetListModel", 1, 0, "SetListModel");
+
     view->rootContext()->setContextProperty(QStringLiteral("searchedCardListModel"), m_searchedCardListModel.get());
     view->rootContext()->setContextProperty(QStringLiteral("setListModel"), m_setListModel.get());
     view->rootContext()->setContextProperty(QStringLiteral("typesListModel"), &m_typesListModel);
@@ -66,10 +69,25 @@ SetListModelPtr ModelsManager::setListModel() const {
     return m_setListModel;
 }
 
-void ModelsManager::searchCardsByName(SearchParameters* parameters, std::function<void(void)> callback) {
+void ModelsManager::searchCardsByName(SearchParameters* parameters, std::function<void(CardListPtr cards)> callback, Mode mode) {
     m_connection->searchCardsByName(parameters, [=](CardListPtr cards) {
-        m_searchedCardListModel->setCardList(cards);
-        callback();
+        if (mode == Mode::reset) {
+            m_searchedCardListModel->setCardList(cards);
+        } else if (mode == Mode::append) {
+            m_searchedCardListModel->appendList(cards);
+        }
+        callback(cards);
+    });
+}
+
+void ModelsManager::searchCardsByName(const SearchParameters& parameters, std::function<void(CardListPtr cards)> callback, Mode mode) {
+    m_connection->searchCardsByName(parameters, [=](CardListPtr cards) {
+        if (mode == Mode::reset) {
+            m_searchedCardListModel->setCardList(cards);
+        } else if (mode == Mode::append) {
+            m_searchedCardListModel->appendList(cards);
+        }
+        callback(cards);
     });
 }
 
@@ -92,9 +110,13 @@ void ModelsManager::searchCardsByIdList(const QStringList& idList, std::function
     }
 }
 
-void ModelsManager::searchCardsBySet(const QString &setId, std::function<void(void)> callback) {
+void ModelsManager::searchCardsBySet(const QString &setId, std::function<void(void)> callback, Mode mode) {
     m_connection->searchCardsBySet(setId, [=](CardListPtr cards) {
-        m_searchedCardListModel->setCardList(cards);
+        if (mode == Mode::reset) {
+            m_searchedCardListModel->setCardList(cards);
+        } else if (mode == Mode::append) {
+            m_searchedCardListModel->appendList(cards);
+        }
         callback();
     });
 }

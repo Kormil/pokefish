@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 
 Item {
     property var card : undefined
+    property int howMany : 0
     height: nameRow.height + setRow.height + typeRow.height + rarityRow.height
     width: parent.width
 
@@ -42,6 +43,11 @@ Item {
                         loadingImageIndicator.visible = true
                     }
                 }
+            }
+
+            NumberOfCardsItem {
+                visible: howMany > 0 ? true : false
+                number: howMany
             }
 
             BusyIndicator {

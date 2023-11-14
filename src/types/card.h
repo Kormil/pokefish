@@ -122,8 +122,12 @@ public:
 
     CardPtr get(int index);
     CardPtr get(QString id);
+
+    int counter(int index) const;
+    int counter(QString id) const;
+
     int index(QString id) const;
-    void append(const CardPtr &card);
+    void append(const CardPtr &card, int counter = 1);
     void appendList(CardListPtr &cards);
 
     bool exist(QString id) const;
@@ -135,6 +139,7 @@ public slots:
 
 private:
     std::vector<CardPtr> m_cards;
+    std::vector<int> cards_counters_;
     std::map<QString, int> m_idToRow;
 };
 

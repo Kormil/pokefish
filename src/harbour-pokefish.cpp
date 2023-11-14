@@ -8,6 +8,7 @@
 #include "settings.h"
 #include "src/modelsmanager.h"
 #include "src/controller.h"
+#include "src/deckimporter.h"
 #include "src/networkaccessmanagerfactory.h"
 
 int main(int argc, char *argv[])
@@ -34,6 +35,9 @@ int main(int argc, char *argv[])
     Controller &controller = Controller::instance();
     controller.bindToQml(view);
     controller.setModelsManager(&modelsManager);
+
+    DeckImporter::bindToQml();
+    DeckImporter::setModelsManager(&modelsManager);
 
     Settings::bindToQml();
 

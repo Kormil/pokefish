@@ -12,6 +12,8 @@ class QQuickView;
 class ModelsManager
 {
 public:
+    enum class Mode { reset, append };
+
     ModelsManager();
     ~ModelsManager();
 
@@ -25,9 +27,10 @@ public:
     void resetSearchModel();
 
     //cards
-    void searchCardsByName(SearchParameters *parameters, std::function<void(void)> callback);
+    void searchCardsByName(SearchParameters *parameters, std::function<void (CardListPtr)> callback, Mode mode = Mode::reset);
+    void searchCardsByName(const SearchParameters &parameters, std::function<void(CardListPtr)> callback, Mode mode = Mode::reset);
     void searchCardsByIdList(const QStringList& idList, std::function<void(void)> callback);
-    void searchCardsBySet(const QString& setId, std::function<void(void)> callback);
+    void searchCardsBySet(const QString& setId, std::function<void(void)> callback, Mode mode = Mode::reset);
 
     //sets
     void searchAllSets(std::function<void(void)> callback);

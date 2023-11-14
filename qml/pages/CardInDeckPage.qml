@@ -80,6 +80,7 @@ Page {
                 SmallCardItem {
                     id: smallCardItem
                     card: model
+                    howMany: model.counter
                 }
 
                 ListView.onRemove: animateRemoval()

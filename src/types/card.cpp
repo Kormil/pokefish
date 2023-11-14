@@ -272,6 +272,23 @@ CardPtr CardList::get(QString id)
     return nullptr;
 }
 
+int CardList::counter(int index) const {
+    if (index >= m_cards.size()) {
+        return 0;
+    }
+
+    return cards_counters_[index];
+}
+
+int CardList::counter(QString id) const {
+    auto row = m_idToRow.find(id);
+    if (row != m_idToRow.end()) {
+        return cards_counters_[row->second];
+    }
+
+    return 0;
+}
+
 int CardList::index(QString id) const {
     auto row = m_idToRow.find(id);
     if (row != m_idToRow.end()) {
@@ -281,18 +298,18 @@ int CardList::index(QString id) const {
     return -1;
 }
 
-void CardList::append(const CardPtr &card)
+void CardList::append(const CardPtr &card, int counter)
 {
     if (card == nullptr)
         return;
 
     auto cardIt = m_idToRow.find(card->id());
 
-    if (m_idToRow.end() == cardIt)
-    {
+    if (m_idToRow.end() == cardIt) {
         emit preItemAppended();
         int row = m_cards.size();
         m_cards.push_back(card);
+        cards_counters_.push_back(counter);
         m_idToRow[card->id()] = row;
         emit postItemAppended();
     }

@@ -104,7 +104,7 @@ QVariant CardListProxyModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     auto mappedIndex = mapToSource(index);
-    auto result = model->data(mappedIndex, role);
+    auto result = m_cardListModel->data(mappedIndex, role);
     return result;
 }
 
@@ -188,33 +188,39 @@ QVariant CardListModel::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
-    case Qt::DisplayRole: {
-        return QVariant(card->name());
-    }
-    case CardListRole::IdRole: {
-        return QVariant(card->id());
-    }
-    case CardListRole::SuperTypeRole: {
-        return QVariant(card->supertype());
-    }
-    case CardListRole::SubTypeRole: {
-        return QVariant(card->subtype());
-    }
-    case CardListRole::SetRole: {
-        return QVariant(card->cardSet());
-    }
-    case CardListRole::TypesRole: {
-        return QVariant(card->type());
-    }
-    case CardListRole::RarityRole: {
-        return QVariant(card->rarity());
-    }
-    case CardListRole::SmallImageRole: {
-        return QVariant(card->smallImageUrl());
-    }
-    case CardListRole::NationalPokedexNumberRole: {
-        return QVariant(card->nationalPokedexNumber());
-    }
+        case Qt::DisplayRole: {
+            return QVariant(card->name());
+        }
+        case CardListRole::NameRole: {
+            return QVariant(card->name());
+        }
+        case CardListRole::IdRole: {
+            return QVariant(card->id());
+        }
+        case CardListRole::SuperTypeRole: {
+            return QVariant(card->supertype());
+        }
+        case CardListRole::SubTypeRole: {
+            return QVariant(card->subtype());
+        }
+        case CardListRole::SetRole: {
+            return QVariant(card->cardSet());
+        }
+        case CardListRole::TypesRole: {
+            return QVariant(card->type());
+        }
+        case CardListRole::RarityRole: {
+            return QVariant(card->rarity());
+        }
+        case CardListRole::SmallImageRole: {
+            return QVariant(card->smallImageUrl());
+        }
+        case CardListRole::NationalPokedexNumberRole: {
+            return QVariant(card->nationalPokedexNumber());
+        }
+        case CardListRole::Counter: {
+            return QVariant(m_cards->counter(index.row()));
+        }
     }
 
     return QVariant();
@@ -232,6 +238,7 @@ QHash<int, QByteArray> CardListModel::roleNames() const
     names[CardListRole::RarityRole] = "rarity";
     names[CardListRole::SmallImageRole] = "small_image_url";
     names[CardListRole::NationalPokedexNumberRole] = "national_number";
+    names[CardListRole::Counter] = "counter";
     return names;
 }
 
@@ -243,7 +250,7 @@ void CardListModel::setCardList(CardListPtr cards)
         m_cards->disconnect(this);
     }
 
-    m_cards = std::move(cards);
+    m_cards = cards;
 
     if (m_cards)
     {
@@ -285,7 +292,7 @@ bool CardListModel::exist(QString cardId) const {
 }
 
 void CardListModel::append(CardPtr card) {
-    if (!m_cards) {
+    if (!m_cards || !card) {
         return ;
     }
 
@@ -293,9 +300,14 @@ void CardListModel::append(CardPtr card) {
 }
 
 void CardListModel::appendList(CardListPtr cards) {
-    if (!m_cards) {
+    if (!m_cards || !cards) {
         return ;
     }
 
     return m_cards->appendList(cards);
 }
+
+void CardListModel::reset() {
+    setCardList(std::make_shared<CardList>());
+}
+

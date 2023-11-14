@@ -61,13 +61,13 @@ Item {
 
     function dbMigrateToNewestVersion() {
         var db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
-        if (db.version === "1.1.1") {
-            console.log("PokefishDB version: 1.1.1")
+        if (db.version === "1.2.0") {
+            console.log("PokefishDB version: 1.2.0")
             return;
         }
 
         if (db.version === "1.0") {
-            console.log("1.0")
+            console.log("migrate to 1.1")
             db.changeVersion("1.0", "1.1", function(tx) {
                 tx.executeSql("ALTER TABLE Searched ADD COLUMN Type TEXT");
                 tx.executeSql("ALTER TABLE Searched ADD COLUMN Subtype TEXT");
@@ -76,7 +76,7 @@ Item {
 
         db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
         if (db.version === "1.1") {
-            console.log("1.1")
+            console.log("migrate to 1.1.1")
             db.changeVersion("1.1", "1.1.1", function(tx) {
                 tx.executeSql("ALTER TABLE Cards ADD COLUMN NationalNumber INTEGER");
             }
@@ -84,8 +84,15 @@ Item {
 
         db = LocalStorage.openDatabaseSync("PokefishDB", "", "", 1000000);
         if (db.version === "1.1.1") {
-            console.log("1.1.1")
-        }
+            console.log("migrate to 1.2.0")
+            db.changeVersion("1.1.1", "1.2.0", function(tx) {
+                tx.executeSql("ALTER TABLE Decks_Cards RENAME TO Decks_Cards_old");
+                tx.executeSql('CREATE TABLE IF NOT EXISTS Decks_Cards AS
+                                SELECT DeckID, CardID, COUNT(Decks_Cards_old.CardID) AS counter
+                                FROM Decks_Cards_old
+                                GROUP BY Decks_Cards_old.DeckId, Decks_Cards_old.CardId');
+            }
+        )}
     }
 }
 

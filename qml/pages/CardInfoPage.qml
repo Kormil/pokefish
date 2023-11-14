@@ -36,7 +36,7 @@ Page {
 
                     dialog.accepted.connect(function() {
                         if (dialog.choosed !== -1) {
-                            cardsdb.dbAddCard(card, dialog.choosed)
+                            cardsdb.dbAddCardToDeck(card, dialog.choosed)
 
                             if (parentPage) {
                                 parentPage.updateModels(dialog.choosed)

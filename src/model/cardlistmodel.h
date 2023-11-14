@@ -68,8 +68,10 @@ public:
         TypesRole,
         RarityRole,
         SmallImageRole,
-        NationalPokedexNumberRole
+        NationalPokedexNumberRole,
+        Counter
     };
+    Q_ENUM(CardListRole)
 
     explicit CardListModel(QObject *parent = nullptr);
     // Basic functionality:
@@ -82,6 +84,7 @@ public:
     void appendList(CardListPtr cards);
     void setCardList(CardListPtr cards);
 
+    Q_INVOKABLE void reset();
     Q_INVOKABLE Card* card(QString id);
 
 signals:

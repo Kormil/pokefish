@@ -15,28 +15,36 @@ class SearchParameters : public QObject
 public:
     SearchParameters(QObject * parent = nullptr) {}
 
-    bool parse(QString& outUrlParameters) {
+    bool parse(QString& outUrlParameters) const {
         QStringList parsed;
 
         if (m_name.length()) {
             parsed << "name:" + m_name;
         }
 
-        if (m_type.length() && m_type != "Any") {
-            parsed << "type:" + m_type;
-        }
+        parsed << addParameter(m_type, "type");
+        parsed << addParameter(m_subtype, "subtype");
+        parsed << addParameter(m_ptcgoSeriesCode, "set.ptcgoCode");
+        parsed << addParameter(m_cardNumber, "number");
 
-        if (m_subtype.length() && m_subtype != "Any") {
-            parsed << "subtype:" + m_subtype;
-        }
-
-        outUrlParameters = parsed.join("&");
+        parsed.removeAll(QString(""));
+        outUrlParameters = parsed.join(" ");
         return outUrlParameters.length();
+    }
+
+    QString addParameter(QString value, QString name) const {
+        if (value.length() && value != "Any") {
+            return name + ":" + value;
+        }
+
+        return "";
     }
 
     QString m_name;
     QString m_type;
     QString m_subtype;
+    QString m_ptcgoSeriesCode;
+    QString m_cardNumber;
 };
 
 using SearchParametersPtr = std::shared_ptr<SearchParameters>;

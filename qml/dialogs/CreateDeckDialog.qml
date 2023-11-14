@@ -5,6 +5,7 @@ import "../db"
 
 Dialog {
     id: page
+    property int deckId: -1
 
     DecksDB {
         id: decksdb
@@ -33,7 +34,9 @@ Dialog {
 
     onDone: {
         if (result == DialogResult.Accepted) {
-            decksdb.dbAddDeck(nameField.text)
+            var createdDeckid = {key: 0}
+            decksdb.dbAddDeck(nameField.text, createdDeckid)
+            deckId = createdDeckid.key
         }
     }
 

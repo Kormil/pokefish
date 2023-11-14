@@ -53,7 +53,7 @@ void Controller::searchCardsByName(QObject *object)
     }
 
     if (m_modelsManager) {
-        m_modelsManager->searchCardsByName(parameters, [this](){
+        m_modelsManager->searchCardsByName(parameters, [this](CardListPtr){
             emit searchCompleted();
         });
     } else {

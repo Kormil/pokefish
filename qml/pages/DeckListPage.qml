@@ -18,6 +18,10 @@ Page {
     allowedOrientations: Orientation.All
 
     Component.onCompleted: {
+        reloadDecks()
+    }
+
+    function reloadDecks() {
         deckList.clear()
         decksdb.dbReadAllDecks(deckList)
     }
@@ -27,7 +31,14 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: qsTr("Add new deck")
+                text: qsTr("Import")
+                onClicked: {
+                    var dialog = pageStack.push(Qt.resolvedUrl("../dialogs/DeckImportDialog.qml"), {root: page})
+                }
+            }
+
+            MenuItem {
+                text: qsTr("Add new")
                 onClicked: {
                     var dialog = pageStack.push(Qt.resolvedUrl("../dialogs/CreateDeckDialog.qml"))
 
@@ -69,8 +80,7 @@ Page {
                     var dialog = pageStack.push(Qt.resolvedUrl("../dialogs/EditDeckDialog.qml"), {deckId: choosed})
 
                     dialog.accepted.connect(function() {
-                        deckList.clear()
-                        decksdb.dbReadAllDecks(deckList)
+                        reloadDecks()
                     })
                 }
 

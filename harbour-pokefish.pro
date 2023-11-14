@@ -16,6 +16,7 @@ CONFIG += sailfishapp
 SOURCES += \
            src/connection.cpp \
            src/controller.cpp \
+           src/deckimporter.cpp \
            src/harbour-pokefish.cpp \
            src/model/setlistmodel.cpp \
            src/request.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 HEADERS += src/types/card.h \
            src/connection.h \
            src/controller.h \
+           src/deckimporter.h \
            src/model/setlistmodel.h \
            src/searchparameters.h \
            src/settings.h \
@@ -54,6 +56,7 @@ DISTFILES += \
     qml/db/DecksDB.qml \
     qml/db/SearchedDB.qml \
     qml/dialogs/CreateDeckDialog.qml \
+    qml/dialogs/DeckImportDialog.qml \
     qml/dialogs/EditDeckDialog.qml \
     qml/dialogs/SelectDeckDialog.qml \
     qml/harbour-pokefish.qml \
@@ -64,6 +67,7 @@ DISTFILES += \
     qml/items/TextButton.qml \
     qml/items/SmallCardItem.qml \
     qml/items/WeaknessInfoItem.qml \
+    items/NumberOfCardsItem.qml \
     qml/pages/BigCardPage.qml \
     qml/pages/CardInDeckPage.qml \
     qml/pages/DeckListPage.qml \

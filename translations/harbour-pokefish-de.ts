@@ -78,11 +78,22 @@
     </message>
 </context>
 <context>
-    <name>DeckListPage</name>
+    <name>DeckImportDialog</name>
     <message>
-        <source>Add new deck</source>
+        <source>From file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>From clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Results</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DeckListPage</name>
     <message>
         <source>Decks</source>
         <translation type="unfinished"></translation>
@@ -93,6 +104,14 @@
     </message>
     <message>
         <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
