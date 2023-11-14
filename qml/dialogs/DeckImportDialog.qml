@@ -71,19 +71,8 @@ Dialog {
                 //visible: Clipboard.hasText
                 text: qsTr("From clipboard")
                 onClicked: {
-                    Clipboard.text = "Pokemon - 15
-2 Lillipup SUM 103"
-
                     loaded = deckImporter.loadData(Clipboard.text)
-
-                    console.debug(loaded)
-
                     if (loaded) {
-                        //get pokemon
-                        //get trainer
-                        //get energy
-
-                        console.debug("Start")
                         loading.maximumValue = loaded
                         searchedCardListModel.reset()
                         deckImporter.start();
