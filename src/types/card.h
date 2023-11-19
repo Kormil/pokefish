@@ -47,6 +47,7 @@ class Card : public QObject
 
 public:
     Card() = default;
+    Card(QVariantMap obj);
 
     void fromJson(QJsonObject& json);
     QString name() const;
@@ -80,6 +81,10 @@ public:
     int nationalPokedexNumber() const;
     void setNationalPokedexNumber(int nationalPokedexNumber);
 
+    QString ptcgoCode();
+    int cardNumber();
+    void setCardNumber(int number);
+
 signals:
     void dataChanged();
 
@@ -109,6 +114,10 @@ private:
     QStringList m_additionalRules;
 
     int m_nationalPokedexNumber;
+
+    // import/export
+    QString ptcgo_code_;
+    int card_number_;
 };
 
 class CardList : public QObject

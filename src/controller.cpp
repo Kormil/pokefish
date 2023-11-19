@@ -66,7 +66,7 @@ void Controller::searchCardsByIdList(const QStringList &idList)
     emit searchStarted();
 
     if (m_modelsManager) {
-        m_modelsManager->searchCardsByIdList(idList, [this](){
+        m_modelsManager->searchCardsByIdList(idList, [this](CardListPtr){
             emit searchCompleted();
         });
     } else {

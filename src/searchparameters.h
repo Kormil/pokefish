@@ -24,7 +24,7 @@ public:
 
         parsed << addParameter(m_type, "type");
         parsed << addParameter(m_subtype, "subtype");
-        parsed << addParameter(m_ptcgoSeriesCode, "set.ptcgoCode");
+        parsed << addParameter(m_ptcgoSeriesCode, "set.ptcgoCode", "set.id");
         parsed << addParameter(m_cardNumber, "number");
 
         parsed.removeAll(QString(""));
@@ -35,6 +35,14 @@ public:
     QString addParameter(QString value, QString name) const {
         if (value.length() && value != "Any") {
             return name + ":" + value;
+        }
+
+        return "";
+    }
+
+    QString addParameter(QString value, QString name, QString name2) const {
+        if (value.length() && value != "Any") {
+            return QString("(%1:%2 OR %3:%2)").arg(name).arg(value).arg(name2);
         }
 
         return "";

@@ -124,7 +124,7 @@ int CardListProxyModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    return QSortFilterProxyModel::rowCount(parent);
+    return m_cardListModel->rowCount();
 }
 
 SortCards::EnSortCards CardListProxyModel::sortedBy() const
@@ -166,7 +166,7 @@ void CardListProxyModel::setSorting(bool sorting)
 CardListModel::CardListModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    m_cards = std::make_shared<CardList>();
+    setCardList(std::make_shared<CardList>());
 }
 
 int CardListModel::rowCount(const QModelIndex &parent) const
@@ -268,7 +268,7 @@ void CardListModel::setCardList(CardListPtr cards)
     emit cardsLoaded();
 }
 
-Card* CardListModel::card(QString id) {
+Card* CardListModel::getRaw(QString id) {
     if (!m_cards) {
         return nullptr;
     }
@@ -283,6 +283,19 @@ Card* CardListModel::card(QString id) {
     return nullptr;
 }
 
+CardPtr CardListModel::card(QString id) {
+    if (!m_cards) {
+        return nullptr;
+    }
+
+    auto cardPtr = m_cards->get(id);
+    if (cardPtr) {
+        return cardPtr;
+    }
+
+    return nullptr;
+}
+
 bool CardListModel::exist(QString cardId) const {
     if (!m_cards) {
         return false;
@@ -291,12 +304,19 @@ bool CardListModel::exist(QString cardId) const {
     return m_cards->exist(cardId);
 }
 
-void CardListModel::append(CardPtr card) {
+Q_INVOKABLE void CardListModel::append(QVariantMap obj) {
+    auto card = std::make_shared<Card>(obj);
+
+    auto counter = obj["counter"].toInt();
+    append(card, counter);
+}
+
+void CardListModel::append(CardPtr card, int count) {
     if (!m_cards || !card) {
         return ;
     }
 
-    return m_cards->append(card);
+    return m_cards->append(card, count);
 }
 
 void CardListModel::appendList(CardListPtr cards) {

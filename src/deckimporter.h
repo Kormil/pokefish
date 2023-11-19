@@ -58,6 +58,7 @@ signals:
 private:
     std::vector<ImportedCard> parseImportedDeck(const QStringList& imported);
     bool parseLineFromDeck(const QString& line, ImportedCard& parsed_line);
+    ImportedCard parseEnergy(int counter, QString name, QString series, QString card_number);
 
     std::vector<ImportedCard> cards_;
 

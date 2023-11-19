@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 import CardListModel 1.0
 import Controller 1.0
 import Settings 1.0
+import DeckExporter 1.0
 
 import "../items"
 import "../db"
@@ -18,8 +19,17 @@ Page {
     DecksDB {
         id: decksdb
     }
+
     CardsDB {
         id: cardsdb
+    }
+
+    DeckExporter {
+        id: exporter
+    }
+
+    CardListModel {
+        id: cardList
     }
 
     function updateModels(selectedDeckId) {
@@ -39,8 +49,16 @@ Page {
     SilicaFlickable {
         anchors.fill: parent
 
-        ListModel {
-            id: cardList
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Export")
+                onClicked: {
+                    var dialog = pageStack.push(Qt.resolvedUrl("../pages/DeckExportPage.qml"),
+                                                {deckExporter: exporter,
+                                                deckName: name})
+                    exporter.loadData(cardList)
+                }
+            }
         }
 
         SilicaListView {

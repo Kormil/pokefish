@@ -38,7 +38,7 @@ Page {
                 }
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("CardInfoPage.qml"), {card: searchedCardListModel.card(model.card_id)})
+                    pageStack.push(Qt.resolvedUrl("CardInfoPage.qml"), {card: searchedCardListModel.getRaw(model.card_id)})
                 }
             }
 

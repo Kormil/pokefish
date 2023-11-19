@@ -1,6 +1,12 @@
 #include "deckimporter.h"
 
 #include <QtQml>
+#include <QChar>
+
+namespace {
+constexpr int ENERGY_CARDS = 9;
+constexpr int FIRST_ENERGY = 163;
+}
 
 ModelsManager* DeckImporter::models_manager_ = nullptr;
 
@@ -129,8 +135,48 @@ bool DeckImporter::parseLineFromDeck(const QString& line, ImportedCard& parsed_l
     name.prepend("\"");
     name.append("\"");
 
-    parsed_line = {counter, name, series, card_number};
+    if (name.contains("energy", Qt::CaseInsensitive)) {
+        parsed_line = parseEnergy(counter, name, series, card_number);
+    } else {
+        parsed_line = {counter, name, series, card_number};
+    }
+
     return true;
+}
+
+DeckImporter::ImportedCard DeckImporter::parseEnergy(int counter, QString name, QString series, QString card_number) {
+    if (series.contains("energy", Qt::CaseInsensitive)) {
+        series = "SUM";
+        card_number = QString::number(FIRST_ENERGY + (card_number.toInt() % ENERGY_CARDS));
+    }
+
+    auto first = name.lastIndexOf("{");
+
+    if (first != -1) {
+        auto character = name.at(first + 1);
+
+        if (character == QChar('G')) {
+          name = "Green";
+        } else if (character == QChar('R')) {
+          name = "Fire";
+        } else if (character == QChar('W')) {
+            name = "Water";
+        } else if (character == QChar('L')) {
+            name = "Lightning";
+        } else if (character == QChar('P')) {
+            name = "Psychic";
+        } else if (character == QChar('F')) {
+            name = "Fighting";
+        } else if (character == QChar('D')) {
+            name = "Darkness";
+        } else if (character == QChar('M')) {
+            name = "Metal";
+        } else if (character == QChar('Y')) {
+            name = "Fairy";
+        }
+    }
+
+    return {counter, name, series, card_number};
 }
 
 void DeckImporter::bindToQml()

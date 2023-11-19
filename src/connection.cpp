@@ -136,6 +136,38 @@ void Connection::searchCardsById(const QString& cardId, std::function<void(CardP
     requestRaw->run();
 }
 
+void Connection::searchCardsById(const std::vector<QString>& card_id_list, std::function<void(CardListPtr)> handler) {
+    QString url = "https://api.pokemontcg.io/v2/cards?q=";
+
+    for (const auto& card_id: card_id_list) {
+        url.append("id:");
+        url.append(card_id);
+
+        if (card_id_list.back() != card_id) {
+            url.append(" OR ");
+        }
+    }
+
+    QUrl searchUrl(url);
+
+    Request* requestRaw = request(searchUrl);
+
+    QObject::connect(requestRaw, &Request::finished, [this, requestRaw, handler](Request::Status status, const QByteArray& responseArray) {
+        if (status == Request::ERROR) {
+            std::cout << "CONNECTION ERROR" << std::endl;
+            handler(CardListPtr{});
+        } else {
+            qDebug() << "Download finished";
+            CardListPtr cards = parseCards(QJsonDocument::fromJson(responseArray));
+            qDebug() << "Cards parsed";
+            handler(std::move(cards));
+        }
+
+        deleteRequest(requestRaw->serial());
+    });
+    requestRaw->run();
+}
+
 void Connection::searchCardsBySet(const QString& setId, std::function<void(CardListPtr)> handler) {
     QString url = "https://api.pokemontcg.io/v2/cards?q=set.id:" + setId;
     QUrl searchUrl(url);

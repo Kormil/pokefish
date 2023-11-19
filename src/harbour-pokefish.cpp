@@ -9,6 +9,7 @@
 #include "src/modelsmanager.h"
 #include "src/controller.h"
 #include "src/deckimporter.h"
+#include "src/deckexporter.h"
 #include "src/networkaccessmanagerfactory.h"
 
 int main(int argc, char *argv[])
@@ -38,6 +39,9 @@ int main(int argc, char *argv[])
 
     DeckImporter::bindToQml();
     DeckImporter::setModelsManager(&modelsManager);
+
+    DeckExporter::bindToQml();
+    DeckExporter::setModelsManager(&modelsManager);
 
     Settings::bindToQml();
 

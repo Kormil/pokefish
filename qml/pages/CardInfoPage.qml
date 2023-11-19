@@ -277,7 +277,7 @@ Page {
             loading.running = false
 
             mainColumn.visible = true
-            card = searchedCardListModel.card(cardId)
+            card = searchedCardListModel.getRaw(cardId)
             cardsdb.dbUpdateCard(card, cardId)
         }
     }

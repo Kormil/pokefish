@@ -68,7 +68,6 @@ Dialog {
             }
 
             MenuItem {
-                //visible: Clipboard.hasText
                 text: qsTr("From clipboard")
                 onClicked: {
                     loaded = deckImporter.loadData(Clipboard.text)

@@ -16,6 +16,7 @@ CONFIG += sailfishapp
 SOURCES += \
            src/connection.cpp \
            src/controller.cpp \
+           src/deckexporter.cpp \
            src/deckimporter.cpp \
            src/harbour-pokefish.cpp \
            src/model/setlistmodel.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
 HEADERS += src/types/card.h \
            src/connection.h \
            src/controller.h \
+           src/deckexporter.h \
            src/deckimporter.h \
            src/model/setlistmodel.h \
            src/searchparameters.h \
@@ -50,6 +52,8 @@ DISTFILES += \
     graphics/icons/deck.png \
     graphics/icons/pokeball.png \
     harbour-pokefish.desktop \
+    harbour-pokefish/qml/items/AdditionalTextItem.qml \
+    items/NumberOfCardsItem.qml \
     qml/cover/CoverPage.qml \
     qml/db/CardsDB.qml \
     qml/db/DatabaseManager.qml \
@@ -58,27 +62,26 @@ DISTFILES += \
     qml/dialogs/CreateDeckDialog.qml \
     qml/dialogs/DeckImportDialog.qml \
     qml/dialogs/EditDeckDialog.qml \
+    qml/dialogs/SearchByNameDialog.qml \
     qml/dialogs/SelectDeckDialog.qml \
     qml/harbour-pokefish.qml \
     qml/items/AbilityInfo.qml \
     qml/items/AtackInfo.qml \
     qml/items/CardSwitcher.qml \
     qml/items/DeckItem.qml \
-    qml/items/TextButton.qml \
     qml/items/SmallCardItem.qml \
+    qml/items/TextButton.qml \
     qml/items/WeaknessInfoItem.qml \
-    items/NumberOfCardsItem.qml \
+    qml/pages/AboutPage.qml \
     qml/pages/BigCardPage.qml \
     qml/pages/CardInDeckPage.qml \
+    qml/pages/CardInfoPage.qml \
+    qml/pages/DeckExportPage.qml \
     qml/pages/DeckListPage.qml \
     qml/pages/FirstPage.qml \
+    qml/pages/LicensePage.qml \
     qml/pages/SearchBySetPage.qml \
     qml/pages/SearchedCardsPage.qml \
-    qml/pages/CardInfoPage.qml \
-    qml/pages/AboutPage.qml \
-    qml/pages/LicensePage.qml \
-    qml/dialogs/SearchByNameDialog.qml \
-    harbour-pokefish/qml/items/AdditionalTextItem.qml \
     qml/pages/SettingsPage.qml \
     rpm/harbour-pokefish.changes.in \
     rpm/harbour-pokefish.changes.run.in \

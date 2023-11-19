@@ -91,23 +91,48 @@ void ModelsManager::searchCardsByName(const SearchParameters& parameters, std::f
     });
 }
 
-void ModelsManager::searchCardsByIdList(const QStringList& idList, std::function<void(void)> callback) {
+void ModelsManager::searchCardsByIdList(const QStringList& idList, std::function<void(CardListPtr cards)> callback) {
     if (!m_searchedCardListModel) {
         return;
     }
 
-    //TODO przerobić żeby ten callback był jak już wszystkie się pobiorą
+    std::vector<QString> cards_to_download;
+    auto card_list = std::make_shared<CardList>();
+
+    // skip already downloaded
     for (const auto& id: idList) {
-        if (m_searchedCardListModel->exist(id)) {
-            callback();
-            return;
+        auto card = m_searchedCardListModel->card(id);
+        if (card) {
+            card_list->append(card);
+            continue;
         }
 
-        m_connection->searchCardsById(id, [=](CardPtr card) {
-            m_searchedCardListModel->append(card);
-            callback();
-        });
+        cards_to_download.push_back(id);
     }
+
+    if (cards_to_download.empty()) {
+        callback(card_list);
+        return;
+    }
+
+    // download the rest
+    if (cards_to_download.size() == 1) {
+        m_connection->searchCardsById(cards_to_download.front(), [=](CardPtr card) {
+            m_searchedCardListModel->append(card);
+            card_list->append(card);
+
+            callback(card_list);
+        });
+
+        return;
+    }
+
+    m_connection->searchCardsById(cards_to_download, [=](CardListPtr cards) {
+        m_searchedCardListModel->appendList(cards);
+        card_list->appendList(cards);
+
+        callback(card_list);
+    });
 }
 
 void ModelsManager::searchCardsBySet(const QString &setId, std::function<void(void)> callback, Mode mode) {

@@ -34,6 +34,7 @@ public:
     void searchCardsByName(SearchParameters* parameters, std::function<void(CardListPtr)> handler);
     void searchCardsByName(const SearchParameters& parameters, std::function<void(CardListPtr)> handler);
     void searchCardsById(const QString& cardId, std::function<void(CardPtr)> handler);
+    void searchCardsById(const std::vector<QString>& card_id_list, std::function<void(CardListPtr)> handler);
     void searchCardsBySet(const QString& setId, std::function<void(CardListPtr)> handler);
 
     //Sets

@@ -3,6 +3,20 @@
 #include <algorithm>
 #include <QtQml>
 
+Card::Card(QVariantMap obj) {
+    qDebug() << obj;
+
+    m_id = obj["card_id"].toString();
+    m_name = obj["name"].toString();
+    m_cardSet = obj["set"].toString();
+    m_rarity = obj["rarity"].toString();
+    m_subtype = obj["sub_type"].toString();
+    m_supertype = obj["super_type"].toString();
+    m_types = obj["types"].toStringList();
+    m_smallImageUrl = obj["small_image_url"].toString();
+    m_nationalPokedexNumber = obj["national_number"].toInt();
+}
+
 QString Card::name() const {
     return m_name;
 }
@@ -133,11 +147,26 @@ void Card::setNationalPokedexNumber(int nationalPokedexNumber)
     emit dataChanged();
 }
 
+QString Card::ptcgoCode() {
+    return ptcgo_code_;
+}
+
+int Card::cardNumber() {
+    return card_number_;
+}
+
+void Card::setCardNumber(int number) {
+    card_number_ = number;
+}
+
 void Card::fromJson(QJsonObject &json) {
     QString id = json["id"].toString();
     QString name = json["name"].toString();
     QString set = json["set"].toObject()["name"].toString();
+    ptcgo_code_ = json["set"].toObject()["ptcgoCode"].toString();
     QString rarity = json["rarity"].toString();
+    card_number_ = json["number"].toString().toInt();
+
     auto subtypeJsonArray = json["subtypes"].toArray();
 
     QString subtype;
@@ -243,7 +272,6 @@ CardList::CardList(QObject *parent) : QObject(parent)
 
 }
 
-
 CardList::~CardList()
 {
 }
@@ -317,8 +345,11 @@ void CardList::append(const CardPtr &card, int counter)
 
 void CardList::appendList(CardListPtr &cards)
 {
-    for (auto& card: cards->m_cards)
-    {
+    if (!cards) {
+        return;
+    }
+
+    for (auto& card: cards->m_cards) {
         append(card);
     }
 

@@ -80,12 +80,15 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     bool exist(QString cardId) const;
-    void append(CardPtr card);
+    Q_INVOKABLE void append(QVariantMap obj);
+    void append(CardPtr card, int count = 1);
     void appendList(CardListPtr cards);
     void setCardList(CardListPtr cards);
 
     Q_INVOKABLE void reset();
-    Q_INVOKABLE Card* card(QString id);
+    Q_INVOKABLE Card* getRaw(QString id);
+
+    CardPtr card(QString id);
 
 signals:
     void cardsLoaded();
