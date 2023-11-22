@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Pickers 1.0
+import Nemo.Notifications 1.0
 
 import DeckImporter 1.0
 import CardListModel 1.0
@@ -127,12 +128,6 @@ Dialog {
         valueText: ""
         label: "Loading"
         visible: false
-//        Timer {
-//            interval: 100
-//            repeat: true
-//            onTriggered: progressBar.value = (progressBar.value + 1) % 100
-//            running: false
-//        }
     }
 
     Connections {
@@ -148,6 +143,19 @@ Dialog {
         onImportedAllCards: {
             loading.enabled = false
             loading.visible = false
+
+            if (deckImporter.downloadErrors) {
+                notification.publish()
+            }
         }
+    }
+
+    Notification {
+        property int errors: deckImporter.downloadErrors
+        id: notification
+
+        summary: "Errors: " + errors
+        body: "There was problem with " + errors + (errors === 1 ? " card." : " cards.")
+        isTransient: true
     }
 }

@@ -90,7 +90,13 @@ void DeckExporter::addCard(const CardPtr& card, int counter) {
                 card->setCardNumber(9);
             }
 
-            line = QString("%1 %2 %3 %4").arg(counter).arg(card->name()).arg("SVE").arg(card->cardNumber());
+            // hack for old cards
+            QString ptcgo_code = "Energy";
+            if (card->ptcgoCode().contains("sve", Qt::CaseInsensitive)) {
+                ptcgo_code = "SVE";
+            }
+
+            line = QString("%1 %2 %3 %4").arg(counter).arg(card->name()).arg(ptcgo_code).arg(card->cardNumber());
         }
 
         energies_.push_back(line);

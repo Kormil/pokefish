@@ -42,6 +42,8 @@ void DeckImporter::start()
 
     //reset imported cards before start downloading
     already_downloaded = 0;
+    successfull_downloaded = 0;
+    download_errors_ = 0;
 
     emit importStarted(cards_.size());
 
@@ -62,6 +64,7 @@ void DeckImporter::start()
         models_manager_->searchCardsByName(parameters, [this, &card](CardListPtr cards) {
             if (!cards || !cards->size()) {
                 qWarning() << "No cards";
+                ++download_errors_;
             } else if (cards->size() == 1) {
                 auto downloaded_card = cards->get(0);
                 qWarning() << card.card_name;
@@ -194,4 +197,8 @@ int DeckImporter::alreadyDownloaded() {
 
 QAbstractListModel *DeckImporter::importedCards() {
     return card_list_model_.get();
+}
+
+int DeckImporter::downloadErrors() {
+    return download_errors_;
 }

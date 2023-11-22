@@ -32,6 +32,7 @@ class DeckImporter : public QObject
     };
 
     Q_PROPERTY(int alreadyDownloaded READ alreadyDownloaded NOTIFY importedCard)
+    Q_PROPERTY(int downloadErrors READ downloadErrors NOTIFY importedCard)
     Q_PROPERTY(QAbstractListModel* importedCards READ importedCards NOTIFY importedCard)
 
 public:
@@ -49,6 +50,7 @@ public:
     QAbstractListModel *importedCards();
 
     int alreadyDownloaded();
+    int downloadErrors();
 
 signals:
     void importStarted(int count);
@@ -66,8 +68,9 @@ private:
     CardListModelPtr card_list_model_;
 
     std::mutex mtx_;
-    std::atomic_uint already_downloaded;
-    std::atomic_uint successfull_downloaded;
+    std::atomic_uint already_downloaded = {0};
+    std::atomic_uint successfull_downloaded = {0};
+    std::atomic_uint download_errors_ = {0};
 
     static ModelsManager* models_manager_;
 };
