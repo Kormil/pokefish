@@ -56,6 +56,7 @@ signals:
     void importStarted(int count);
     void importedCard(int count);
     void importedAllCards();
+    void tooManyCardsError();
 
 private:
     std::vector<ImportedCard> parseImportedDeck(const QStringList& imported);

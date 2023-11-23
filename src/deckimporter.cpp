@@ -6,6 +6,7 @@
 namespace {
 constexpr int ENERGY_CARDS = 9;
 constexpr int FIRST_ENERGY = 163;
+constexpr int MAX_CARDS_TO_IMPORT = 30;
 }
 
 ModelsManager* DeckImporter::models_manager_ = nullptr;
@@ -55,7 +56,14 @@ void DeckImporter::start()
         }
     });
 
+    int card_number = 0;
     for (auto& card: cards_) {
+        ++card_number;
+        if (card_number >= MAX_CARDS_TO_IMPORT) {
+            emit tooManyCardsError();
+            break;
+        }
+
         SearchParameters parameters;
         parameters.m_name = card.card_name;
         parameters.m_ptcgoSeriesCode = card.series;

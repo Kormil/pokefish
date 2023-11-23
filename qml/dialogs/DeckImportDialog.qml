@@ -150,12 +150,27 @@ Dialog {
         }
     }
 
+    Connections {
+        target: deckImporter
+        onTooManyCardsError: {
+            tooManyCardsNotification.publish()
+        }
+    }
+
     Notification {
         property int errors: deckImporter.downloadErrors
         id: notification
 
-        summary: "Errors: " + errors
-        body: "There was problem with " + errors + (errors === 1 ? " card." : " cards.")
+        summary: qsTr("Errors: ") + errors
+        body: qsTr("There was problem with ") + errors + (errors === 1 ? qsTr(" card") : qsTr(" cards"))
+        isTransient: true
+    }
+
+    Notification {
+        id: tooManyCardsNotification
+
+        summary: qsTr("Too many cards")
+        body: qsTr("Cannot import more than 30 different cards in one shot")
         isTransient: true
     }
 }

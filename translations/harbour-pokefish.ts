@@ -106,6 +106,30 @@
         <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Errors: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There was problem with </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> card.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> cards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too many cards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot import more than 30 cards</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DeckListPage</name>
