@@ -19,33 +19,35 @@ SOURCES += \
            src/deckexporter.cpp \
            src/deckimporter.cpp \
            src/harbour-pokefish.cpp \
-           src/model/setlistmodel.cpp \
-           src/request.cpp \
-           src/modelsmanager.cpp \
-           src/settings.cpp \
            src/model/cardlistmodel.cpp \
+           src/model/setlistmodel.cpp \
+           src/modelsmanager.cpp \
+           src/request.cpp \
+           src/settings.cpp \
            src/types/ability.cpp \
            src/types/attack.cpp \
            src/types/card.cpp \
            src/types/deck.cpp \
-           src/types/set.cpp
+           src/types/set.cpp \
+           src/utils/filesaver.cpp
 
 HEADERS += src/types/card.h \
            src/connection.h \
            src/controller.h \
            src/deckexporter.h \
            src/deckimporter.h \
+           src/model/cardlistmodel.h \
            src/model/setlistmodel.h \
-           src/searchparameters.h \
-           src/settings.h \
+           src/modelsmanager.h \
            src/networkaccessmanagerfactory.h \
            src/request.h \
-           src/modelsmanager.h \
-           src/model/cardlistmodel.h \
+           src/searchparameters.h \
+           src/settings.h \
            src/types/ability.h \
            src/types/attack.h \
            src/types/deck.h \
-           src/types/set.h
+           src/types/set.h \
+           src/utils/filesaver.h
 
 DISTFILES += \
     graphics/icons/card.png \
@@ -62,6 +64,7 @@ DISTFILES += \
     qml/dialogs/CreateDeckDialog.qml \
     qml/dialogs/DeckImportDialog.qml \
     qml/dialogs/EditDeckDialog.qml \
+    qml/dialogs/SaveFileDialog.qml \
     qml/dialogs/SearchByNameDialog.qml \
     qml/dialogs/SelectDeckDialog.qml \
     qml/harbour-pokefish.qml \

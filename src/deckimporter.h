@@ -42,7 +42,7 @@ public:
     static void setModelsManager(ModelsManager* modelsManager);
 
     Q_INVOKABLE int loadData(const QString& text);
-    Q_INVOKABLE int loadData(const QUrl& file);
+    Q_INVOKABLE int loadDataFromFile(const QString& file_url);
 
     Q_INVOKABLE void start();
     //Q_INVOKABLE QStringList cardIdList();

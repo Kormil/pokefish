@@ -1,6 +1,7 @@
 #include "deckexporter.h"
 
 #include <QtQml>
+#include <QFile>
 
 ModelsManager* DeckExporter::models_manager_ = nullptr;
 

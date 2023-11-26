@@ -5,6 +5,7 @@ import Nemo.Notifications 1.0
 
 import DeckImporter 1.0
 import CardListModel 1.0
+import Settings 1.0
 
 import "../items"
 import "../db"
@@ -53,6 +54,13 @@ Dialog {
             nameFilters: [ '*.txt' ]
             onSelectedContentPropertiesChanged: {
                 selectedFile = selectedContentProperties.filePath
+
+                loaded = deckImporter.loadDataFromFile(selectedFile)
+                if (loaded) {
+                    loading.maximumValue = loaded
+                    searchedCardListModel.reset()
+                    deckImporter.start();
+                }
             }
         }
     }

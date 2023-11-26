@@ -2,6 +2,7 @@
 
 #include <QtQml>
 #include <QChar>
+#include <QFile>
 
 namespace {
 constexpr int ENERGY_CARDS = 9;
@@ -30,8 +31,18 @@ int DeckImporter::loadData(const QString &text) {
     return 0;
 }
 
-int DeckImporter::loadData(const QUrl &file) {
+int DeckImporter::loadDataFromFile(const QString &file_url) {
+    QFile file(file_url);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return 0;
+    }
 
+    QString lines;
+    while (!file.atEnd()) {
+        lines.append(file.readLine());
+    }
+
+    return loadData(lines);
 }
 
 void DeckImporter::start()

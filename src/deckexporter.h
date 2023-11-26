@@ -30,6 +30,7 @@ public:
 signals:
     void exportStarted();
     void exportFinished();
+    void fileExists();
 
 private:
     std::vector<QString> pokemons_;

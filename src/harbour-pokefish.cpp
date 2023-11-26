@@ -11,6 +11,7 @@
 #include "src/deckimporter.h"
 #include "src/deckexporter.h"
 #include "src/networkaccessmanagerfactory.h"
+#include "utils/filesaver.h"
 
 int main(int argc, char *argv[])
 {
@@ -36,6 +37,9 @@ int main(int argc, char *argv[])
     Controller &controller = Controller::instance();
     controller.bindToQml(view);
     controller.setModelsManager(&modelsManager);
+
+    FileSaver &fileSaver = FileSaver::instance();
+    FileSaver::bindToQml(view);
 
     DeckImporter::bindToQml();
     DeckImporter::setModelsManager(&modelsManager);

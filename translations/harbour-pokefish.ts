@@ -115,19 +115,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source> card.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> cards.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Too many cards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot import more than 30 cards</source>
+        <source> card</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> cards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot import more than 30 different cards in one shot</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -203,6 +203,29 @@
     <name>Request</name>
     <message>
         <source>Request timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SaveFileDialog</name>
+    <message>
+        <source>Export to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Override</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
