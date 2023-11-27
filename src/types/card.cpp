@@ -151,11 +151,11 @@ QString Card::ptcgoCode() {
     return ptcgo_code_;
 }
 
-int Card::cardNumber() {
+QString Card::cardNumber() {
     return card_number_;
 }
 
-void Card::setCardNumber(int number) {
+void Card::setCardNumber(QString number) {
     card_number_ = number;
 }
 
@@ -165,7 +165,7 @@ void Card::fromJson(QJsonObject &json) {
     QString set = json["set"].toObject()["name"].toString();
     ptcgo_code_ = json["set"].toObject()["ptcgoCode"].toString();
     QString rarity = json["rarity"].toString();
-    card_number_ = json["number"].toString().toInt();
+    card_number_ = json["number"].toString();
 
     auto subtypeJsonArray = json["subtypes"].toArray();
 

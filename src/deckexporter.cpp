@@ -72,23 +72,23 @@ void DeckExporter::addCard(const CardPtr& card, int counter) {
     } else if (card->supertype() == "Energy") {
         if (card->subtype() == "Basic") {
             if (card->name().contains("Green", Qt::CaseInsensitive)) {
-                card->setCardNumber(1);
+                card->setCardNumber("1");
             } else if (card->name().contains("Fire", Qt::CaseInsensitive)) {
-                card->setCardNumber(2);
+                card->setCardNumber("2");
             } else if (card->name().contains("Water", Qt::CaseInsensitive)) {
-                card->setCardNumber(3);
+                card->setCardNumber("3");
             } else if (card->name().contains("Lightning", Qt::CaseInsensitive)) {
-                card->setCardNumber(4);
+                card->setCardNumber("4");
             } else if (card->name().contains("Psychic", Qt::CaseInsensitive)) {
-                card->setCardNumber(5);
+                card->setCardNumber("5");
             } else if (card->name().contains("Fighting", Qt::CaseInsensitive)) {
-                card->setCardNumber(6);
+                card->setCardNumber("6");
             } else if (card->name().contains("Darkness", Qt::CaseInsensitive)) {
-                card->setCardNumber(7);
+                card->setCardNumber("7");
             } else if (card->name().contains("Metal", Qt::CaseInsensitive)) {
-                card->setCardNumber(8);
+                card->setCardNumber("8");
             } else if (card->name().contains("Fairy", Qt::CaseInsensitive)) {
-                card->setCardNumber(9);
+                card->setCardNumber("9");
             }
 
             // hack for old cards

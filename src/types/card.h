@@ -82,8 +82,8 @@ public:
     void setNationalPokedexNumber(int nationalPokedexNumber);
 
     QString ptcgoCode();
-    int cardNumber();
-    void setCardNumber(int number);
+    QString cardNumber();
+    void setCardNumber(QString number);
 
 signals:
     void dataChanged();
@@ -117,7 +117,7 @@ private:
 
     // import/export
     QString ptcgo_code_;
-    int card_number_;
+    QString card_number_;
 };
 
 class CardList : public QObject

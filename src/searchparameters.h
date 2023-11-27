@@ -13,13 +13,17 @@ class SearchParameters : public QObject
     Q_PROPERTY(QString subtype MEMBER m_subtype)
 
 public:
-    SearchParameters(QObject * parent = nullptr) {}
+    SearchParameters(QObject * parent = nullptr) : QObject(parent) {}
 
     bool parse(QString& outUrlParameters) const {
         QStringList parsed;
 
         if (m_name.length()) {
-            parsed << "name:" + m_name;
+            // hack for & chars ( * means any char )
+            auto name = m_name;
+            name = name.replace("&", "*");
+
+            parsed << "name:" + name;
         }
 
         parsed << addParameter(m_type, "type");
