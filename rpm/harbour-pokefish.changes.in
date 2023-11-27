@@ -12,6 +12,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon Nov 27 2023 Bartłomiej Seliga <bartek.seliga@hotmail.com> 1.2.0-1
+- Showing a number of cards
+- Importing decks from the clipboard or the file
+- Exporting decks to the clipboard or the file
+
 * Fri Apr 16 2021 Bartłomiej Seliga <bartek.seliga@hotmail.com> 1.1.0-1
 - Migrate to api v2
 - Added 'type' and 'subtype' for searching

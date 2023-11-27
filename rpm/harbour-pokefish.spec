@@ -9,7 +9,7 @@ Name:       harbour-pokefish
 # << macros
 
 Summary:    Application for organize your cards and decks of pokemon TCG.
-Version:    1.1.0
+Version:    1.2.0
 Release:    1
 Group:      Qt/Qt
 License:    LICENSE
