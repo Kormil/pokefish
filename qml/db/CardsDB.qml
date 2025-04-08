@@ -45,12 +45,12 @@ Item {
                     })
     }
 
-    function dbAddCardToDeck(card, deckId) {
+    function dbAddCardToDeck(card, deckId, out_counter) {
         var db = LocalStorage.openDatabaseSync("PokefishDB", "1.2.0", "", 1000000);
         db.transaction(
                     function(tx) {
                         var cardId = dbSaveCard(tx, card)
-                        dbConnectCardAndDeck(tx, cardId, deckId, 1)
+                        out_counter.value = dbConnectCardAndDeck(tx, cardId, deckId, 1)
                     })
     }
 
@@ -108,18 +108,25 @@ Item {
     }
 
     function dbConnectCardAndDeck(tx, cardId, deckId, cardNumber) {
-        var counter = tx.executeSql('SELECT Counter
+        var result = tx.executeSql('SELECT Counter
                                     FROM Decks_Cards
                                     WHERE DeckID = ? AND CardID = ?', [ deckId, cardId ])
 
-        if (counter.rows.length === 0) {
+        if (result.rows.length === 0) {
             // It never was the card id in this deck
             tx.executeSql('INSERT INTO Decks_Cards (DeckID, CardID, Counter) VALUES(?, ?, ?)', [ deckId, cardId, cardNumber ])
         } else {
             tx.executeSql('UPDATE Decks_Cards
                            SET counter = counter + ?
-                           WHERE DeckID = ? AND CardID = ?', [ cardNumber, deckId, cardId ]);
+                           WHERE DeckID = ? AND CardID = ?', [ cardNumber, deckId, cardId ])
         }
+
+        // get after update
+        result = tx.executeSql('SELECT Counter
+                                 FROM Decks_Cards
+                                 WHERE DeckID = ? AND CardID = ?', [ deckId, cardId ])
+
+        return result.rows.item(0).counter
     }
 
     function dbUpdateCard(card, apiCardId) {
@@ -159,14 +166,22 @@ Item {
                     )
     }
 
-    function dbRemoveCardFromDeck(cardId, deckId) {
+    function dbRemoveCardFromDeck(cardId, deckId, out_counter) {
         var db = LocalStorage.openDatabaseSync("PokefishDB", "1.2.0", "", 1000000);
         db.transaction(
-                    function(tx) {
-                        tx.executeSql('UPDATE Decks_Cards
+                    function(tx) {// get after update
+                        var r = tx.executeSql('UPDATE Decks_Cards
                                        SET counter = counter - 1
-                                       WHERE DeckID = ? AND CardID = ?', [ deckId, cardId ]);
+                                       WHERE DeckID = ? AND CardID = ?', [ deckId, cardId ])
+
+                        // get after update
+                        var result = tx.executeSql('SELECT Counter
+                                                 FROM Decks_Cards
+                                                 WHERE DeckID = ? AND CardID = ?', [ deckId, cardId ])
+
+                        out_counter.value = result.rows.item(0).counter
                     })
+
 
     }
 }

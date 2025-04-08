@@ -68,7 +68,9 @@ public:
         TypesRole,
         RarityRole,
         SmallImageRole,
+        LargeImageRole,
         NationalPokedexNumberRole,
+        HP,
         Counter
     };
     Q_ENUM(CardListRole)

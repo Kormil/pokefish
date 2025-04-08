@@ -66,10 +66,6 @@
 <context>
     <name>CardInfoPage</name>
     <message>
-        <source>Add to deck</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rules</source>
         <translation type="unfinished"></translation>
     </message>
@@ -150,7 +146,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add new</source>
+        <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -254,11 +250,18 @@
 <context>
     <name>SearchedCardsPage</name>
     <message>
-        <source>No results</source>
+        <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Results</source>
+        <source>No results</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectDeckPage</name>
+    <message>
+        <source>Decks</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

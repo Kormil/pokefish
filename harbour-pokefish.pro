@@ -66,9 +66,10 @@ DISTFILES += \
     qml/dialogs/EditDeckDialog.qml \
     qml/dialogs/SaveFileDialog.qml \
     qml/dialogs/SearchByNameDialog.qml \
-    qml/dialogs/SelectDeckDialog.qml \
+    qml/pages/cards/SelectDeckPage.qml \
     qml/harbour-pokefish.qml \
     qml/items/AbilityInfo.qml \
+    qml/items/AddToDeckItem.qml \
     qml/items/AtackInfo.qml \
     qml/items/CardSwitcher.qml \
     qml/items/DeckItem.qml \
@@ -78,7 +79,8 @@ DISTFILES += \
     qml/pages/AboutPage.qml \
     qml/pages/BigCardPage.qml \
     qml/pages/CardInDeckPage.qml \
-    qml/pages/CardInfoPage.qml \
+    qml/pages/cards/CardInfoPage.qml \
+    qml/pages/cards/CardInfoMainPage.qml \
     qml/pages/DeckExportPage.qml \
     qml/pages/DeckListPage.qml \
     qml/pages/FirstPage.qml \

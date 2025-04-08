@@ -5,6 +5,7 @@ import Controller 1.0
 import Settings 1.0
 
 import "../items"
+import "cards"
 
 Page {
     allowedOrientations: Orientation.All
@@ -21,9 +22,10 @@ Page {
                 sorting: Settings.sortCards
                 sortBy: Settings.sortCardsBy
             }
-            currentIndex: -1
+
             anchors.fill: parent
             spacing: Theme.paddingMedium
+            highlightFollowsCurrentItem: true
 
             header: PageHeader {
                 id: title
@@ -31,19 +33,30 @@ Page {
             }
 
             delegate: ListItem {
+                property int indexOfThisDelegate: index
+
                 contentHeight: smallCardItem.height
+
                 SmallCardItem {
                     id: smallCardItem
                     card: model
                 }
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("CardInfoPage.qml"), {card: searchedCardListModel.getRaw(model.card_id)})
+                    pageStack.push(Qt.resolvedUrl("cards/CardInfoMainPage.qml"), {
+                                       current_index: indexOfThisDelegate
+                                   })
                 }
             }
 
             VerticalScrollDecorator {}
         }
+    }
+
+    Binding {
+        target: listView
+        property: "currentIndex"
+        value: pageStack.currentPage.current_index
     }
 
     BusyIndicator {
@@ -71,7 +84,6 @@ Page {
             loading.visible = false
             loading.running = false
 
-            console.log(listView.count)
             if (listView.count === 0) {
                 hintLabel.visible = true
             }

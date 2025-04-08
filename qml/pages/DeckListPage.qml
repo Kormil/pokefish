@@ -38,7 +38,7 @@ Page {
             }
 
             MenuItem {
-                text: qsTr("Add new")
+                text: qsTr("Add")
                 onClicked: {
                     var dialog = pageStack.push(Qt.resolvedUrl("../dialogs/CreateDeckDialog.qml"))
 

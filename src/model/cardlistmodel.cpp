@@ -215,9 +215,15 @@ QVariant CardListModel::data(const QModelIndex &index, int role) const
         case CardListRole::SmallImageRole: {
             return QVariant(card->smallImageUrl());
         }
+    case CardListRole::LargeImageRole: {
+        return QVariant(card->largeImageUrl());
+    }
         case CardListRole::NationalPokedexNumberRole: {
             return QVariant(card->nationalPokedexNumber());
         }
+    case CardListRole::HP: {
+        return QVariant(card->hp());
+    }
         case CardListRole::Counter: {
             return QVariant(m_cards->counter(index.row()));
         }
@@ -237,7 +243,9 @@ QHash<int, QByteArray> CardListModel::roleNames() const
     names[CardListRole::TypesRole] = "types";
     names[CardListRole::RarityRole] = "rarity";
     names[CardListRole::SmallImageRole] = "small_image_url";
+    names[CardListRole::LargeImageRole] = "large_image_url";
     names[CardListRole::NationalPokedexNumberRole] = "national_number";
+    names[CardListRole::HP] = "hp";
     names[CardListRole::Counter] = "counter";
     return names;
 }

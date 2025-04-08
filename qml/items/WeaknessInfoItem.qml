@@ -26,10 +26,10 @@ Column {
 
         Image {
             id: weaknessIcon
-            visible: type.length
+            visible: type.length > 0
             fillMode: Image.PreserveAspectFit
             height: nameLabel.height
-            source: "qrc:///graphics/types/"+type+".png"
+            source: type.length > 0 ? "qrc:///graphics/types/"+type+".png" : ""
             smooth: false
             cache: true
         }

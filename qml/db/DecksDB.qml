@@ -99,4 +99,20 @@ Item {
             }
         )
     }
+
+    function dbCountCardsInDeck(deckId, out_counter) {
+        var db = LocalStorage.openDatabaseSync("PokefishDB", "1.2.0", "", 1000000);
+        db.transaction(function (tx) {
+            var results = tx.executeSql(
+                        'SELECT SUM(Decks_Cards.Counter) AS allCards
+                         FROM Decks
+                         LEFT JOIN Decks_Cards ON Decks.DeckId = Decks_Cards.DeckId
+                         WHERE Decks_Cards.DeckId = ?', [deckId]);
+
+            if (results.rows.length) {
+                out_counter.value = results.rows.item(0).allCards;
+            }
+
+        })
+    }
 }

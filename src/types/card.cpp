@@ -74,6 +74,10 @@ QString Card::rule(int index) const {
     return m_additionalRules[index];
 }
 
+QStringList Card::rules() const {
+    return m_additionalRules;
+}
+
 int Card::abilitiesSize() const {
     return m_abilities.size();
 }

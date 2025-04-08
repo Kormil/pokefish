@@ -64,6 +64,7 @@ public:
 
     int rulesSize() const;
     Q_INVOKABLE QString rule(int index) const;
+    QStringList rules() const;
 
     int abilitiesSize() const;
     Q_INVOKABLE Ability* ability(int index);
