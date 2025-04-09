@@ -43,11 +43,11 @@ Item {
 
             onClicked: {
                 var card_counter = {value: 0}
-                cardsdb.dbRemoveCardFromDeck(cardID.key, card_id, card_counter)
+                cardsdb.dbRemoveCardFromDeck(card_id, deck_id, card_counter)
                 model.card = parseInt(card_counter.value)
 
                 var all_card_counter = {value: 0}
-                decksdb.dbCountCardsInDeck(card_id, all_card_counter);
+                decksdb.dbCountCardsInDeck(deck_id, all_card_counter);
                 model.cards = parseInt(all_card_counter.value)
             }
         }
@@ -68,7 +68,7 @@ Item {
 
             Label {
                 id: allCardsNumberLabel
-                text: model.cards
+                text: model.cards ? model.cards : "0"
                 color: Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeSmall
 
@@ -84,12 +84,14 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
 
                 onClicked: {
+                    var card_id = {value: 0}
                     var card_counter = {value: 0}
-                    cardsdb.dbAddCardToDeck(card, card_id, card_counter)
+                    cardsdb.dbAddCardToDeck(page.card, deck_id, card_id, card_counter)
                     model.card = parseInt(card_counter.value)
+                    item.card_id = parseInt(card_id.value)
 
                     var all_card_counter = {value: 0}
-                    decksdb.dbCountCardsInDeck(card_id, all_card_counter);
+                    decksdb.dbCountCardsInDeck(deck_id, all_card_counter);
                     model.cards = parseInt(all_card_counter.value)
                 }
             }

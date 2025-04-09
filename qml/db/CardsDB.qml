@@ -45,12 +45,12 @@ Item {
                     })
     }
 
-    function dbAddCardToDeck(card, deckId, out_counter) {
+    function dbAddCardToDeck(card, deckId, out_card_id, out_counter) {
         var db = LocalStorage.openDatabaseSync("PokefishDB", "1.2.0", "", 1000000);
         db.transaction(
                     function(tx) {
-                        var cardId = dbSaveCard(tx, card)
-                        out_counter.value = dbConnectCardAndDeck(tx, cardId, deckId, 1)
+                        out_card_id.value = dbSaveCard(tx, card)
+                        out_counter.value = dbConnectCardAndDeck(tx, out_card_id.value, deckId, 1)
                     })
     }
 
