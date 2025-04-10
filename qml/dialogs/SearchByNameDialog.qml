@@ -22,7 +22,26 @@ Dialog {
         id: searcheddb
     }
 
-    // The effective value will be restricted by ApplicationWindow.allowedOrientations
+    function setParameters(name, type, subtype) {
+        searchField.text = name
+        typeComboBox.currentIndex = 0
+        subtypeComboBox.currentIndex = 0
+
+        var row
+        for (row = 0; row < typesListModel.rowCount(); ++row) {
+          if (typesListModel.data(typesListModel.index(row, 0)) === type) {
+              typeComboBox.currentIndex = row
+              break
+          }
+        }
+
+        for (row = 0; row < subtypesListModel.rowCount(); ++row) {
+          if (subtypesListModel.data(subtypesListModel.index(row, 0)) === subtype) {
+              subtypeComboBox.currentIndex = row
+              break
+          }
+        }
+    }
 
     allowedOrientations: Orientation.All
     acceptDestination: Qt.resolvedUrl("../pages/SearchedCardsPage.qml")
@@ -38,7 +57,6 @@ Dialog {
         search_parameters.name = searchField.text
         search_parameters.type = typeComboBox.value
         search_parameters.subtype = subtypeComboBox.value
-
 
         searcheddb.dbAdd(search_parameters)
         searcheddb.dbClean(50)
@@ -73,7 +91,9 @@ Dialog {
 
         Column {
             anchors.fill: parent
-            DialogHeader { }
+            DialogHeader {
+                id: header
+            }
 
             SearchField {
                 id: searchField
@@ -139,14 +159,14 @@ Dialog {
 
                 model: searchedList
                 width: parent.width
-                height: contentHeight
+                height: searchByNameDialog.height - advanceSearchingColumn.height - searchField.height - header.height
 
                 delegate: BackgroundItem {
                     id: delegate
 
                     Row {
                         x: Theme.horizontalPageMargin
-                        width: parent.width
+                        width: parent.width - Theme.horizontalPageMargin
                         spacing: Theme.paddingSmall
                         height: Theme.itemSizeSmall
 
@@ -171,27 +191,22 @@ Dialog {
                         }
                     }
 
-                    onClicked: {
-                        searchField.text = model.name
-                        typeComboBox.currentIndex = 0
-                        subtypeComboBox.currentIndex = 0
+                    IconButton {
+                        anchors.right: parent.right
+                        icon.source: "image://theme/icon-m-setting"
+                        anchors.rightMargin: Theme.horizontalPageMargin / 2
 
-                        var row
-                        for (row = 0; row < typesListModel.rowCount(); ++row) {
-                          if (typesListModel.data(typesListModel.index(row, 0)) === model.type) {
-                              typeComboBox.currentIndex = row
-                              break
-                          }
-                        }
-
-                        for (row = 0; row < subtypesListModel.rowCount(); ++row) {
-                          if (subtypesListModel.data(subtypesListModel.index(row, 0)) === model.subtype) {
-                              subtypeComboBox.currentIndex = row
-                              break
-                          }
+                        onClicked: {
+                            setParameters(model.name, model.type, model.subtype)
                         }
                     }
+
+                    onClicked: {
+                        setParameters(model.name, model.type, model.subtype)
+                        accept()
+                    }
                 }
+
                 VerticalScrollDecorator {}
             }
         }

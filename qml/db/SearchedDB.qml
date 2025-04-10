@@ -24,7 +24,7 @@ Item {
                                      ORDER BY ID DESC
                                      LIMIT 1')
 
-                        if (result.rows.length == 0 ||
+                        if (result.rows.length === 0 ||
                                 (result.rows.item(0).Name !== parameters.name ||
                                  result.rows.item(0).Type !== parameters.type ||
                                  result.rows.item(0).Subtype !== parameters.subtype)) {
@@ -42,7 +42,7 @@ Item {
                         'SELECT *
                          FROM Searched
                          ORDER BY ID DESC
-                         LIMIT 10')
+                         LIMIT 50')
 
             for (var i = 0; i < results.rows.length; i++) {
                 model.append({
