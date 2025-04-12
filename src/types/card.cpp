@@ -4,8 +4,6 @@
 #include <QtQml>
 
 Card::Card(QVariantMap obj) {
-    qDebug() << obj;
-
     m_id = obj["card_id"].toString();
     m_name = obj["name"].toString();
     m_cardSet = obj["set"].toString();

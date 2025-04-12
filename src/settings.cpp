@@ -10,10 +10,33 @@
 #define CARDS_SORT_BY_SETTINGS_PATH QStringLiteral("cards/sort_by")
 #define NETWORK_ALWAYS_LARGE_IMAGES_SETTINGS_PATH QStringLiteral("network/always_large_images")
 
-Settings::Settings(QObject *parent) :
-    m_settings(std::make_unique<QSettings>(parent))
+Settings::Settings()
 {
+    migratedb();
 
+    const QString settings_path = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)
+    + "/" + QCoreApplication::applicationName() + ".conf";
+    m_settings = std::make_unique<QSettings>(settings_path, QSettings::NativeFormat);
+}
+
+void Settings::migratedb() {
+    QDir db_dir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation)
+            + "/QML/OfflineStorage/Databases/");
+    if (!db_dir.exists()) {
+        QDir oldDbDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+                + "/" + QCoreApplication::applicationName()
+                + "/" + QCoreApplication::applicationName()
+                + "/QML/OfflineStorage/Databases/");
+
+        db_dir.mkpath(".");
+
+        const QStringList db_files = oldDbDir.entryList({"*.sqlite", "*.ini"}, QDir::Files);
+        for (const QString &db_file : db_files) {
+            if (!QFile::copy(oldDbDir.filePath(db_file), db_dir.filePath(db_file))) {
+                qDebug() << "Migrate db file: " << db_file;
+            }
+        }
+    }
 }
 
 int Settings::sortCardsBy() const

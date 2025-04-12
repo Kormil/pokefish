@@ -37,7 +37,9 @@ signals:
     void alwaysLargeImagesChanged();
 
 private:
-    explicit Settings(QObject *parent = nullptr);
+    void migratedb();
+
+    explicit Settings();
     std::unique_ptr<QSettings> m_settings;
 };
 
