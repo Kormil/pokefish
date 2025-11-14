@@ -51,7 +51,11 @@ Page {
 
                 onClicked: {
                     Controller.resetSearchResult();
-                    pageStack.push(Qt.resolvedUrl("SearchedCardsPage.qml"))
+
+                    pageStack.push(Qt.resolvedUrl("SearchedCardsPage.qml"), {
+                                       title: model.name
+                                   })
+
                     Controller.searchCardsBySet(model.set_id)
                 }
             }

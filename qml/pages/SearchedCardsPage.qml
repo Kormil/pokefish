@@ -8,6 +8,9 @@ import "../items"
 import "cards"
 
 Page {
+    id: page
+    property string title: "Result"
+
     allowedOrientations: Orientation.All
 
     SilicaFlickable {
@@ -29,7 +32,7 @@ Page {
 
             header: PageHeader {
                 id: title
-                title: qsTr("Results")
+                title: page.title
             }
 
             delegate: ListItem {

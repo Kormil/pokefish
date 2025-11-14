@@ -250,10 +250,6 @@
 <context>
     <name>SearchedCardsPage</name>
     <message>
-        <source>Results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No results</source>
         <translation type="unfinished"></translation>
     </message>
