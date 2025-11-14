@@ -1,40 +1,41 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include <QObject>
-#include <QQmlEngine>
-#include <QJSEngine>
-
 #include "modelsmanager.h"
 #include "searchparameters.h"
 
+#include <QJSEngine>
+#include <QObject>
+#include <QQmlEngine>
+
 class Controller : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
+
 public:
-    static Controller& instance();
-    static QObject *instance(QQmlEngine *engine, QJSEngine *scriptEngine);
-    static void bindToQml(QQuickView *view);
+  static Controller& instance();
+  static QObject* instance(QQmlEngine* engine, QJSEngine* scriptEngine);
+  static void bindToQml(QQuickView* view);
 
-    void setModelsManager(ModelsManager* modelsManager);
-    Q_INVOKABLE void resetSearchResult();
-    Q_INVOKABLE void searchCardsByName(QObject *object);
-    Q_INVOKABLE void searchCardsByIdList(const QStringList &idList);
-    Q_INVOKABLE void searchCardsBySet(const QString &setId);
+  void setModelsManager(ModelsManager* modelsManager);
+  Q_INVOKABLE void resetSearchResult();
+  Q_INVOKABLE void searchCardsByName(QObject* object);
+  Q_INVOKABLE void searchCardsByIdList(const QStringList& idList);
+  Q_INVOKABLE void searchCardsBySet(const QString& setId);
 
-    Q_INVOKABLE void searchAllSets();
+  Q_INVOKABLE void searchAllSets();
 
 signals:
-    void searchStarted();
-    void searchCompleted();
+  void searchStarted();
+  void searchCompleted();
 
-    void searchSetStarted();
-    void searchSetCompleted();
+  void searchSetStarted();
+  void searchSetCompleted();
 
 private:
-    explicit Controller(QObject *parent = nullptr);
+  explicit Controller(QObject* parent = nullptr);
 
-    ModelsManager* m_modelsManager = nullptr;
+  ModelsManager* m_modelsManager = nullptr;
 };
 
 #endif // CONTROLLER_H

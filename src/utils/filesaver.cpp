@@ -1,56 +1,69 @@
 #include "filesaver.h"
 
-#include <QtQml>
 #include <QFile>
+#include <QtQml>
 
-FileSaver::FileSaver(QObject *parent) :
-    QObject(parent) {
-
-}
-
-FileSaver& FileSaver::instance()
+FileSaver::FileSaver(QObject* parent)
+  : QObject(parent)
 {
-    static FileSaver instance;
-    return instance;
 }
 
-void FileSaver::bindToQml(QQuickView *view) {
-    qmlRegisterSingletonType<FileSaver>("FileSaver", 1, 0, "FileSaver", FileSaver::instance);
-}
-
-QObject *FileSaver::instance(QQmlEngine *engine, QJSEngine *scriptEngine)
+FileSaver&
+FileSaver::instance()
 {
-    Q_UNUSED(engine)
-    Q_UNUSED(scriptEngine)
-
-    return &instance();
+  static FileSaver instance;
+  return instance;
 }
 
-bool FileSaver::exists(const QString& path, QString name) {
-    name.append(".txt");
-
-    QDir directory(path);
-    QFile file(directory.filePath(name));
-
-    return file.exists();
+void
+FileSaver::bindToQml(QQuickView* view)
+{
+  qmlRegisterSingletonType<FileSaver>(
+    "FileSaver", 1, 0, "FileSaver", FileSaver::instance);
 }
 
-bool FileSaver::saveTo(const QString& data, const QString& path, QString name, bool force) {
-    name.append(".txt");
+QObject*
+FileSaver::instance(QQmlEngine* engine, QJSEngine* scriptEngine)
+{
+  Q_UNUSED(engine)
+  Q_UNUSED(scriptEngine)
 
-    QDir directory(path);
-    QFile file(directory.filePath(name));
+  return &instance();
+}
 
-    if (file.exists() && !force) {
-        emit fileExists();
-        return false;
-    }
+bool
+FileSaver::exists(const QString& path, QString name)
+{
+  name.append(".txt");
 
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        return false;
-    }
+  QDir directory(path);
+  QFile file(directory.filePath(name));
 
-    QTextStream out(&file);
-    out << data;
-    return true;
+  return file.exists();
+}
+
+bool
+FileSaver::saveTo(const QString& data,
+                  const QString& path,
+                  QString name,
+                  bool force)
+{
+  name.append(".txt");
+
+  QDir directory(path);
+  QFile file(directory.filePath(name));
+
+  if (file.exists() && !force) {
+    emit fileExists();
+    return false;
+  }
+
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text |
+                 QIODevice::Truncate)) {
+    return false;
+  }
+
+  QTextStream out(&file);
+  out << data;
+  return true;
 }
