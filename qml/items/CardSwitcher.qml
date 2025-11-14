@@ -100,7 +100,6 @@ Item {
         onPressed: {
             bigCard.smooth = false
             xclick = mapToItem(cardsSwitcher, mouseX, mouseY).x
-            console.debug(xclick)
         }
 
         onReleased: {

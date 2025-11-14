@@ -5,7 +5,7 @@
 #include "connection.h"
 
 namespace {
-    int REQUEST_TIMEOUT = 20000;
+    int REQUEST_TIMEOUT = 60000;
 }
 
 Request::Request(const QUrl &url, Connection *connection) :

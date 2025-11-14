@@ -114,6 +114,25 @@ Attack* Card::attack(int index) {
     return nullptr;
 }
 
+QString Card::prices(const QString &market_name, PriceType::Value type, PriceLevel::Value level) {
+    auto market_prices = m_prices[market_name];
+    if (market_prices) {
+        return market_prices->price(type, level);
+    }
+
+    return "";
+}
+
+QString Card::priceUrl(const QString &market_name) {
+    auto market_prices = m_prices[market_name];
+    if (market_prices) {
+        return market_prices->url();
+    }
+
+    return "";
+}
+
+
 bool Card::hasRetreatCost() const {
     return m_hasRetreatCost;
 }
@@ -267,6 +286,9 @@ void Card::fromJson(QJsonObject &json) {
        m_nationalPokedexNumber = numberJson.toInt();
        break; //TODO should get all number not only first one
     }
+
+    m_prices["tcgplayer"] = MarketPrice::fromJson("tcgplayer", json);
+    m_prices["cardmarket"] = MarketPrice::fromJson("cardmarket", json);
 }
 
 CardList::CardList(QObject *parent) : QObject(parent)

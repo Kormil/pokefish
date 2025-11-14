@@ -28,6 +28,7 @@ SOURCES += \
            src/types/attack.cpp \
            src/types/card.cpp \
            src/types/deck.cpp \
+           src/types/price.cpp \
            src/types/set.cpp \
            src/utils/filesaver.cpp
 
@@ -45,6 +46,7 @@ HEADERS += src/types/card.h \
            src/settings.h \
            src/types/ability.h \
            src/types/attack.h \
+           src/types/price.h \
            src/types/deck.h \
            src/types/set.h \
            src/utils/filesaver.h
@@ -66,6 +68,7 @@ DISTFILES += \
     qml/dialogs/EditDeckDialog.qml \
     qml/dialogs/SaveFileDialog.qml \
     qml/dialogs/SearchByNameDialog.qml \
+    qml/items/PriceItem.qml \
     qml/pages/cards/SelectDeckPage.qml \
     qml/harbour-pokefish.qml \
     qml/items/AbilityInfo.qml \
@@ -81,6 +84,7 @@ DISTFILES += \
     qml/pages/CardInDeckPage.qml \
     qml/pages/cards/CardInfoPage.qml \
     qml/pages/cards/CardInfoMainPage.qml \
+    qml/pages/cards/MarketPricePage.qml \
     qml/pages/DeckExportPage.qml \
     qml/pages/DeckListPage.qml \
     qml/pages/FirstPage.qml \

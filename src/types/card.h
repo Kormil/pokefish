@@ -11,6 +11,7 @@
 
 #include "attack.h"
 #include "ability.h"
+#include "price.h"
 
 class Card;
 class CardList;
@@ -72,6 +73,9 @@ public:
     int attackSize() const;
     Q_INVOKABLE Attack* attack(int index);
 
+    Q_INVOKABLE QString prices(const QString &market_name, PriceType::Value type, PriceLevel::Value level);
+    Q_INVOKABLE QString priceUrl(const QString &market_name);
+
     bool hasRetreatCost() const;
     int retreatCost() const;
     QString weakness() const;
@@ -103,6 +107,8 @@ private:
 
     std::vector<AbilityPtr> m_abilities;
     std::vector<AttackPtr> m_attacks;
+
+    std::map<QString, MarketPricePtr> m_prices;
 
     bool m_hasRetreatCost = false;
     int m_retreatCost;

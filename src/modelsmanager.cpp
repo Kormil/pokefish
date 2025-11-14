@@ -8,6 +8,7 @@
 #include "src/types/card.h"
 #include "src/types/attack.h"
 #include "src/types/ability.h"
+#include "src/types/price.h"
 
 #include "src/searchparameters.h"
 
@@ -57,6 +58,14 @@ void ModelsManager::bindToQml(QQuickView * view)
 
     qmlRegisterType<Card>("Card", 1, 0, "Card");
     qmlRegisterType<Attack>("Card", 1, 0, "Attack");
+
+    qmlRegisterUncreatableType<MarketPrice>("MarketPrice", 1, 0, "MarketPrice", "Only for enums");
+    qmlRegisterUncreatableType<PriceType>("MarketPrice", 1, 0, "PriceType", "Only for enums");
+    qmlRegisterUncreatableType<PriceLevel>("MarketPrice", 1, 0, "PriceLevel", "Only for enums");
+
+    qRegisterMetaType<PriceType::Value>();
+    qRegisterMetaType<PriceLevel::Value>();
+
     qmlRegisterType<Ability>("Card", 1, 0, "Ability");
     qmlRegisterType<Card>("Set", 1, 0, "Set");
 }
