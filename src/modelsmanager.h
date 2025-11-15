@@ -37,8 +37,8 @@ public:
   void searchCardsByName(const SearchParameters& parameters,
                          std::function<void(CardListPtr)> callback,
                          Mode mode = Mode::reset);
-  void searchCardsByIdList(const QStringList& idList,
-                           std::function<void(CardListPtr cards)> callback);
+  int searchCardsByIdList(const QStringList& idList,
+                          std::function<void(int, CardListPtr)> callback);
   void searchCardsBySet(const QString& setId,
                         std::function<void(void)> callback,
                         Mode mode = Mode::reset);

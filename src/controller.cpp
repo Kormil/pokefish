@@ -68,17 +68,21 @@ Controller::searchCardsByName(QObject* object)
   }
 }
 
-void
-Controller::searchCardsByIdList(const QStringList& idList)
+int
+Controller::searchCardsByIdList(const QStringList& id_list)
 {
   emit searchStarted();
 
   if (m_modelsManager) {
-    m_modelsManager->searchCardsByIdList(
-      idList, [this](CardListPtr) { emit searchCompleted(); });
+    return m_modelsManager->searchCardsByIdList(
+      id_list, [this](int serial, CardListPtr) {
+        emit searchWithSerialCompleted(serial);
+      });
   } else {
     emit searchCompleted();
   }
+
+  return 0;
 }
 
 void

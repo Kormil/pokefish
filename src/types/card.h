@@ -150,6 +150,9 @@ public:
   void appendList(CardListPtr& cards);
 
   bool exist(QString id) const;
+
+  QStringList idList() const;
+
 signals:
   void preItemAppended();
   void postItemAppended();

@@ -39,8 +39,8 @@ public:
                          std::function<void(CardListPtr)> handler);
   void searchCardsById(const QString& cardId,
                        std::function<void(CardPtr)> handler);
-  void searchCardsById(const std::vector<QString>& card_id_list,
-                       std::function<void(CardListPtr)> handler);
+  int searchCardsById(const std::vector<QString>& card_id_list,
+                      std::function<void(int, CardListPtr)> handler);
   void searchCardsBySet(const QString& setId,
                         std::function<void(CardListPtr)> handler);
 
@@ -69,7 +69,7 @@ private:
 
   std::unique_ptr<QNetworkAccessManager> m_networkAccessManager;
   std::map<int, RequestPtr> m_networkRequests;
-  std::atomic<int> m_serial;
+  std::atomic<int> m_serial = { 0 };
 
   std::mutex m_networkRequestsMutex;
 };

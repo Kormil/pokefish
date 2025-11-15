@@ -98,6 +98,8 @@ public:
 
   CardPtr card(QString id);
 
+  Q_INVOKABLE QStringList idList() const;
+
 signals:
   void cardsLoaded();
 

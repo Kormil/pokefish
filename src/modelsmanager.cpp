@@ -34,13 +34,13 @@ ModelsManager::createModels()
 
   searchAllTypes();
   searchAllSubtypes();
-  std::cout << "Models created" << std::endl;
+  qDebug() << "Models created";
 }
 
 void
 ModelsManager::deleteModels()
 {
-  std::cout << "Models deleted" << std::endl;
+  qDebug() << "Models deleted";
 }
 
 void
@@ -125,13 +125,13 @@ ModelsManager::searchCardsByName(
   });
 }
 
-void
+int
 ModelsManager::searchCardsByIdList(
   const QStringList& idList,
-  std::function<void(CardListPtr cards)> callback)
+  std::function<void(int, CardListPtr cards)> callback)
 {
   if (!m_searchedCardListModel) {
-    return;
+    return 0;
   }
 
   std::vector<QString> cards_to_download;
@@ -149,8 +149,8 @@ ModelsManager::searchCardsByIdList(
   }
 
   if (cards_to_download.empty()) {
-    callback(card_list);
-    return;
+    callback(0, card_list);
+    return 0;
   }
 
   // download the rest
@@ -159,18 +159,19 @@ ModelsManager::searchCardsByIdList(
       m_searchedCardListModel->append(card);
       card_list->append(card);
 
-      callback(card_list);
+      callback(0, card_list);
     });
 
-    return;
+    return 0;
   }
 
-  m_connection->searchCardsById(cards_to_download, [=](CardListPtr cards) {
-    m_searchedCardListModel->appendList(cards);
-    card_list->appendList(cards);
+  return m_connection->searchCardsById(
+    cards_to_download, [=](int serial, CardListPtr cards) {
+      m_searchedCardListModel->appendList(cards);
+      card_list->appendList(cards);
 
-    callback(card_list);
-  });
+      callback(serial, card_list);
+    });
 }
 
 void
@@ -200,7 +201,7 @@ ModelsManager::searchAllSets(std::function<void(void)> callback)
 void
 ModelsManager::searchAllTypes()
 {
-  m_connection->searchAllTypes([=](const QStringList& types) {
+  m_connection->searchAllTypes([this](const QStringList& types) {
     QStringList typesWithAny = types;
     typesWithAny.sort();
     typesWithAny.push_front("Any");
@@ -212,7 +213,7 @@ ModelsManager::searchAllTypes()
 void
 ModelsManager::searchAllSubtypes()
 {
-  m_connection->searchAllSubtypes([=](const QStringList& subtypes) {
+  m_connection->searchAllSubtypes([this](const QStringList& subtypes) {
     QStringList subtypesWithAny = subtypes;
     subtypesWithAny.sort();
     subtypesWithAny.push_front("Any");

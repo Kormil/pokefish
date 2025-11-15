@@ -12,6 +12,8 @@ Page {
     property string name
     property int deckId
     property var deckModel: undefined
+    property bool loaded: false
+    property int requestSerial: 0
 
     id: thisPage
     allowedOrientations: Orientation.All
@@ -44,6 +46,7 @@ Page {
 
     Component.onCompleted: {
         cardsdb.dbGetCardsByDeckId(deckId, cardList)
+        requestSerial = Controller.searchCardsByIdList(cardList.idList())
     }
 
     SilicaFlickable {
@@ -64,6 +67,8 @@ Page {
         SilicaListView {
             id: listView
 
+            enabled: loaded
+
             model: CardListProxyModel {
                 id: cardListProxyModel
                 cardListModel: cardList
@@ -81,6 +86,8 @@ Page {
             }
 
             delegate: ListItem {
+                property int indexOfThisDelegate: index
+
                 function remove() {
                     remorseDelete(function() {
                         var cardID = {key: 0}
@@ -115,13 +122,41 @@ Page {
                 }
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("CardInfoPage.qml"), {cardId: model.card_id, parentPage: thisPage})
-                    Controller.searchCardsByIdList(model.card_id)
+                    pageStack.push(Qt.resolvedUrl("cards/CardInfoMainPage.qml"), {
+                                       current_index: indexOfThisDelegate
+                                   })
                 }
             }
 
             VerticalScrollDecorator {}
         }
 
+    }
+
+    ProgressBar {
+        id: loading
+        anchors.bottom: thisPage.bottom
+        width: thisPage.width
+        indeterminate: true
+    }
+
+    Connections {
+        target: Controller
+        onSearchStarted: {
+            thisPage.loaded = false
+
+            loading.visible = true
+        }
+    }
+
+    Connections {
+        target: Controller
+        onSearchWithSerialCompleted: {
+            if (requestSerial === serial) {
+                thisPage.loaded = true
+
+                loading.visible = false
+            }
+        }
     }
 }

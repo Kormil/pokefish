@@ -325,6 +325,12 @@ CardListModel::card(QString id)
   return nullptr;
 }
 
+Q_INVOKABLE QStringList
+CardListModel::idList() const
+{
+  return m_cards->idList();
+}
+
 bool
 CardListModel::exist(QString cardId) const
 {

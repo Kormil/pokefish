@@ -56,7 +56,7 @@ DeckExporter::loadData(QAbstractListModel* model)
   }
 
   models_manager_->searchCardsByIdList(
-    cards_to_download, [this, counters](CardListPtr cards) {
+    cards_to_download, [this, counters](int, CardListPtr cards) {
       if (!cards) {
         emit exportFinished();
       }

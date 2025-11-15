@@ -64,7 +64,6 @@ void
 Connection::searchCardsByName(SearchParameters* parameters,
                               std::function<void(CardListPtr)> handler)
 {
-  qDebug() << "searchCardsByName *";
   QString parsedParameters;
 
   if (!parameters || !parameters->parse(parsedParameters)) {
@@ -102,7 +101,6 @@ void
 Connection::searchCardsByName(const SearchParameters& parameters,
                               std::function<void(CardListPtr)> handler)
 {
-  qDebug() << "searchCardsByName &";
   QString parsedParameters;
 
   if (!parameters.parse(parsedParameters)) {
@@ -124,10 +122,8 @@ Connection::searchCardsByName(const SearchParameters& parameters,
                        qCritical() << "CONNECTION ERROR";
                        handler(CardListPtr{});
                      } else {
-                       qDebug() << "Download finished";
                        CardListPtr cards =
                          parseCards(QJsonDocument::fromJson(responseArray));
-                       qDebug() << "Cards parsed";
                        handler(std::move(cards));
                      }
 
@@ -163,9 +159,9 @@ Connection::searchCardsById(const QString& cardId,
   requestRaw->run();
 }
 
-void
+int
 Connection::searchCardsById(const std::vector<QString>& card_id_list,
-                            std::function<void(CardListPtr)> handler)
+                            std::function<void(int, CardListPtr)> handler)
 {
   QString url = "https://api.pokemontcg.io/v2/cards?q=";
 
@@ -188,18 +184,19 @@ Connection::searchCardsById(const std::vector<QString>& card_id_list,
                      Request::Status status, const QByteArray& responseArray) {
                      if (status == Request::ERROR) {
                        std::cout << "CONNECTION ERROR" << std::endl;
-                       handler(CardListPtr{});
+                       handler(requestRaw->serial(), CardListPtr{});
                      } else {
                        qDebug() << "Download finished";
                        CardListPtr cards =
                          parseCards(QJsonDocument::fromJson(responseArray));
                        qDebug() << "Cards parsed";
-                       handler(std::move(cards));
+                       handler(requestRaw->serial(), std::move(cards));
                      }
 
                      deleteRequest(requestRaw->serial());
                    });
   requestRaw->run();
+  return 0;
 }
 
 void
@@ -394,7 +391,8 @@ Connection::parseArrayOfStrings(const char* name,
     return types;
   }
 
-  auto response = jsonDocument.object()[name];
+  auto response_object = jsonDocument.object();
+  const auto& response = response_object[name];
   if (response.isUndefined()) {
     return types;
   }

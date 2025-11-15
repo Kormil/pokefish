@@ -465,3 +465,15 @@ CardList::exist(QString id) const
 
   return true;
 }
+
+QStringList
+CardList::idList() const
+{
+  QStringList ids;
+
+  for (auto const& row : m_idToRow) {
+    ids.push_back(row.first);
+  }
+
+  return ids;
+}

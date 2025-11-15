@@ -20,7 +20,7 @@ public:
   void setModelsManager(ModelsManager* modelsManager);
   Q_INVOKABLE void resetSearchResult();
   Q_INVOKABLE void searchCardsByName(QObject* object);
-  Q_INVOKABLE void searchCardsByIdList(const QStringList& idList);
+  Q_INVOKABLE int searchCardsByIdList(const QStringList& idList);
   Q_INVOKABLE void searchCardsBySet(const QString& setId);
 
   Q_INVOKABLE void searchAllSets();
@@ -28,6 +28,7 @@ public:
 signals:
   void searchStarted();
   void searchCompleted();
+  void searchWithSerialCompleted(int serial);
 
   void searchSetStarted();
   void searchSetCompleted();

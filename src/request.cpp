@@ -20,6 +20,7 @@ Request::Request(const QUrl& url, Connection* connection)
 void
 Request::run()
 {
+  qDebug() << "Send request with serial: " << m_serial;
   networkReply = m_connection->networkAccessManager()->get(m_networkRequest);
   m_requestTimer.start(REQUEST_TIMEOUT);
 
@@ -28,6 +29,7 @@ Request::run()
   });
 
   QObject::connect(networkReply, &QNetworkReply::finished, [this]() {
+    qDebug() << "Response finished with serial: " << m_serial;
     responseFinished(networkReply->error(), networkReply->errorString());
   });
 }
